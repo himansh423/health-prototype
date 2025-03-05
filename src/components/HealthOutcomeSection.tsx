@@ -1,13 +1,11 @@
 "use client"
-
-import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Activity, TrendingUp, BarChart3, LineChart, PieChart } from "lucide-react"
 
 export default function HealthOutcomesSection() {
-  const [activeTab, setActiveTab] = useState("diabetes")
+  
 
   return (
     <section id="outcomes" className="py-16 bg-gradient-to-b from-blue-50 to-white">
@@ -18,13 +16,13 @@ export default function HealthOutcomesSection() {
           </div>
           <h2 className="text-3xl font-bold text-[#0070f3] mb-4">Measurable Health Outcomes</h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Our AI-powered platform doesn't just provide affordable healthcare—it delivers measurable improvements in
+            Our AI-powered platform doesn&apos;t just provide affordable healthcare—it delivers measurable improvements in
             health outcomes for rural communities.
           </p>
         </div>
 
         <div className="max-w-6xl mx-auto">
-          <Tabs defaultValue="diabetes" onValueChange={setActiveTab}>
+          <Tabs defaultValue="diabetes">
             <div className="flex justify-center mb-8">
               <TabsList className="grid grid-cols-3 w-full max-w-md">
                 <TabsTrigger value="diabetes">Diabetes</TabsTrigger>
@@ -132,9 +130,9 @@ export default function HealthOutcomesSection() {
                     <div className="mt-6 bg-slate-50 p-4 rounded-lg">
                       <h4 className="font-medium mb-2">Patient Testimonial</h4>
                       <blockquote className="text-gray-600 italic">
-                        "Before joining this program, I couldn't afford regular testing or medications. My blood sugar
+                        &quot;Before joining this program, I couldn&apos;t afford regular testing or medications. My blood sugar
                         was always high, and I felt terrible. Now, I can manage my diabetes for just ₹450 per month, and
-                        I feel better than I have in years."
+                        I feel better than I have in years.&quot;
                       </blockquote>
                       <p className="text-sm font-medium mt-2">— Ramesh K., Farmer from Uttarakhand</p>
                     </div>
@@ -242,9 +240,9 @@ export default function HealthOutcomesSection() {
                     <div className="mt-6 bg-slate-50 p-4 rounded-lg">
                       <h4 className="font-medium mb-2">Patient Testimonial</h4>
                       <blockquote className="text-gray-600 italic">
-                        "I used to get my BP checked only when I felt dizzy. Now I can monitor it at home and take my
+                        &quot;I used to get my BP checked only when I felt dizzy. Now I can monitor it at home and take my
                         medicines regularly. My headaches are gone, and I can work in the fields all day without feeling
-                        exhausted."
+                        exhausted.&quot;
                       </blockquote>
                       <p className="text-sm font-medium mt-2">— Sunita D., Homemaker from Haridwar</p>
                     </div>
@@ -352,9 +350,9 @@ export default function HealthOutcomesSection() {
                     <div className="mt-6 bg-slate-50 p-4 rounded-lg">
                       <h4 className="font-medium mb-2">Patient Testimonial</h4>
                       <blockquote className="text-gray-600 italic">
-                        "During my first pregnancy, I had many complications. With this program, I received regular
+                        &quot;During my first pregnancy, I had many complications. With this program, I received regular
                         check-ups, proper nutrition, and all the care I needed. My baby was born healthy, and I
-                        recovered quickly."
+                        recovered quickly.&quot;
                       </blockquote>
                       <p className="text-sm font-medium mt-2">— Priya S., Teacher from Rishikesh</p>
                     </div>

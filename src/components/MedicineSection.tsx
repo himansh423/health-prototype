@@ -167,7 +167,7 @@ export default function MedicineSection() {
               <Upload className="h-12 w-12 mx-auto text-primary mb-4" />
               <h3 className="text-xl font-semibold mb-2">Upload Your Prescription</h3>
               <p className="text-gray-600 mb-6">
-                Upload a clear image of your prescription. We'll process it and deliver your medicines to your doorstep.
+                Upload a clear image of your prescription. We&apos;ll process it and deliver your medicines to your doorstep.
               </p>
 
               <div className="max-w-sm mx-auto">
