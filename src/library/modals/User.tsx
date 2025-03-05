@@ -23,8 +23,8 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
-  address:{
-    type:String,
+  address: {
+    type: String,
   },
   otp: {
     type: String,
@@ -32,8 +32,6 @@ const UserSchema = new Schema({
   isVerified: {
     type: Boolean,
   },
-  
-
 });
 
 const User = mongoose.models.Users || mongoose.model("Users", UserSchema);

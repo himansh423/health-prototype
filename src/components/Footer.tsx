@@ -15,16 +15,16 @@ export default function Footer() {
               financing solutions.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-white hover:text-primary transition-colors">
+              <a href="#" className="text-white hover:text-[#0070f3] transition-colors">
                 <Facebook className="h-5 w-5" />
               </a>
-              <a href="#" className="text-white hover:text-primary transition-colors">
+              <a href="#" className="text-white hover:text-[#0070f3] transition-colors">
                 <Twitter className="h-5 w-5" />
               </a>
-              <a href="#" className="text-white hover:text-primary transition-colors">
+              <a href="#" className="text-white hover:text-[#0070f3] transition-colors">
                 <Instagram className="h-5 w-5" />
               </a>
-              <a href="#" className="text-white hover:text-primary transition-colors">
+              <a href="#" className="text-white hover:text-[#0070f3] transition-colors">
                 <Youtube className="h-5 w-5" />
               </a>
             </div>
@@ -65,15 +65,15 @@ export default function Footer() {
             <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
             <ul className="space-y-3">
               <li className="flex items-start">
-                <MapPin className="h-5 w-5 mr-3 text-primary flex-shrink-0 mt-0.5" />
+                <MapPin className="h-5 w-5 mr-3 text-[#0070f3] flex-shrink-0 mt-0.5" />
                 <span className="text-slate-300">123 Healthcare Avenue, Dehradun, Uttarakhand, India</span>
               </li>
               <li className="flex items-center">
-                <Phone className="h-5 w-5 mr-3 text-primary flex-shrink-0" />
+                <Phone className="h-5 w-5 mr-3 text-[#0070f3] flex-shrink-0" />
                 <span className="text-slate-300">+91 98765 43210</span>
               </li>
               <li className="flex items-center">
-                <Mail className="h-5 w-5 mr-3 text-primary flex-shrink-0" />
+                <Mail className="h-5 w-5 mr-3 text-[#0070f3] flex-shrink-0" />
                 <span className="text-slate-300">support@healthcare-plus.com</span>
               </li>
             </ul>
@@ -90,7 +90,7 @@ export default function Footer() {
                 placeholder="Your email address"
                 className="bg-slate-800 border-slate-700 text-white"
               />
-              <Button>Subscribe</Button>
+              <Button className="bg-[#0070f3]">Subscribe</Button>
             </div>
           </div>
         </div>

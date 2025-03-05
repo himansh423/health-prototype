@@ -13,10 +13,10 @@ export default function HealthOutcomesSection() {
     <section id="outcomes" className="py-16 bg-gradient-to-b from-blue-50 to-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center p-2 bg-primary/10 rounded-full mb-4">
-            <Activity className="h-6 w-6 text-primary" />
+          <div className="inline-flex items-center justify-center p-2 bg-[#0070f3]/10 rounded-full mb-4">
+            <Activity className="h-6 w-6 text-[#0070f3]" />
           </div>
-          <h2 className="text-3xl font-bold text-primary mb-4">Measurable Health Outcomes</h2>
+          <h2 className="text-3xl font-bold text-[#0070f3] mb-4">Measurable Health Outcomes</h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Our AI-powered platform doesn't just provide affordable healthcare—it delivers measurable improvements in
             health outcomes for rural communities.
@@ -38,7 +38,7 @@ export default function HealthOutcomesSection() {
                 <Card className="lg:col-span-1">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <TrendingUp className="h-5 w-5 text-primary" />
+                      <TrendingUp className="h-5 w-5 text-[#0070f3]" />
                       Diabetes Management
                     </CardTitle>
                     <CardDescription>Impact of our diabetes care bundle on patient outcomes</CardDescription>
@@ -48,7 +48,7 @@ export default function HealthOutcomesSection() {
                       <div>
                         <h4 className="text-sm font-medium text-gray-500 mb-1">Average HbA1c Reduction</h4>
                         <div className="flex items-end">
-                          <span className="text-3xl font-bold text-primary">1.8%</span>
+                          <span className="text-3xl font-bold text-[#0070f3]">1.8%</span>
                           <span className="text-sm text-green-600 ml-2">↓ 28%</span>
                         </div>
                         <p className="text-xs text-gray-500 mt-1">After 6 months on the program</p>
@@ -57,7 +57,7 @@ export default function HealthOutcomesSection() {
                       <div>
                         <h4 className="text-sm font-medium text-gray-500 mb-1">Medication Adherence</h4>
                         <div className="flex items-end">
-                          <span className="text-3xl font-bold text-primary">87%</span>
+                          <span className="text-3xl font-bold text-[#0070f3]">87%</span>
                           <span className="text-sm text-green-600 ml-2">↑ 42%</span>
                         </div>
                         <p className="text-xs text-gray-500 mt-1">Compared to pre-program baseline</p>
@@ -66,7 +66,7 @@ export default function HealthOutcomesSection() {
                       <div>
                         <h4 className="text-sm font-medium text-gray-500 mb-1">Hospitalization Reduction</h4>
                         <div className="flex items-end">
-                          <span className="text-3xl font-bold text-primary">63%</span>
+                          <span className="text-3xl font-bold text-[#0070f3]">63%</span>
                           <span className="text-sm text-green-600 ml-2">↓ 63%</span>
                         </div>
                         <p className="text-xs text-gray-500 mt-1">Fewer diabetes-related hospitalizations</p>
@@ -76,15 +76,15 @@ export default function HealthOutcomesSection() {
                         <h4 className="font-medium mb-2">Key Factors</h4>
                         <ul className="space-y-2 text-sm">
                           <li className="flex items-start">
-                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                             <span>Regular blood glucose monitoring</span>
                           </li>
                           <li className="flex items-start">
-                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                             <span>Consistent medication access</span>
                           </li>
                           <li className="flex items-start">
-                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                             <span>Dietary guidance and follow-up</span>
                           </li>
                         </ul>
@@ -103,7 +103,7 @@ export default function HealthOutcomesSection() {
                   <CardContent>
                     <div className="aspect-[16/9] bg-slate-50 rounded-lg flex items-center justify-center mb-6">
                       <div className="text-center p-8">
-                        <LineChart className="h-16 w-16 mx-auto text-primary mb-4" />
+                        <LineChart className="h-16 w-16 mx-auto text-[#0070f3] mb-4" />
                         <p className="text-gray-500">Interactive chart showing HbA1c trends over time</p>
                         <p className="text-xs text-gray-400 mt-2">
                           (Visualization would appear here in the actual implementation)
@@ -148,7 +148,7 @@ export default function HealthOutcomesSection() {
                 <Card className="lg:col-span-1">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <TrendingUp className="h-5 w-5 text-primary" />
+                      <TrendingUp className="h-5 w-5 text-[#0070f3]" />
                       Hypertension Management
                     </CardTitle>
                     <CardDescription>Impact of our hypertension care bundle on patient outcomes</CardDescription>
@@ -158,7 +158,7 @@ export default function HealthOutcomesSection() {
                       <div>
                         <h4 className="text-sm font-medium text-gray-500 mb-1">BP Control Achievement</h4>
                         <div className="flex items-end">
-                          <span className="text-3xl font-bold text-primary">72%</span>
+                          <span className="text-3xl font-bold text-[#0070f3]">72%</span>
                           <span className="text-sm text-green-600 ml-2">↑ 58%</span>
                         </div>
                         <p className="text-xs text-gray-500 mt-1">Patients achieving BP control</p>
@@ -167,7 +167,7 @@ export default function HealthOutcomesSection() {
                       <div>
                         <h4 className="text-sm font-medium text-gray-500 mb-1">Medication Adherence</h4>
                         <div className="flex items-end">
-                          <span className="text-3xl font-bold text-primary">91%</span>
+                          <span className="text-3xl font-bold text-[#0070f3]">91%</span>
                           <span className="text-sm text-green-600 ml-2">↑ 47%</span>
                         </div>
                         <p className="text-xs text-gray-500 mt-1">Compared to pre-program baseline</p>
@@ -176,7 +176,7 @@ export default function HealthOutcomesSection() {
                       <div>
                         <h4 className="text-sm font-medium text-gray-500 mb-1">Stroke Risk Reduction</h4>
                         <div className="flex items-end">
-                          <span className="text-3xl font-bold text-primary">38%</span>
+                          <span className="text-3xl font-bold text-[#0070f3]">38%</span>
                           <span className="text-sm text-green-600 ml-2">↓ 38%</span>
                         </div>
                         <p className="text-xs text-gray-500 mt-1">Estimated reduction in stroke risk</p>
@@ -186,15 +186,15 @@ export default function HealthOutcomesSection() {
                         <h4 className="font-medium mb-2">Key Factors</h4>
                         <ul className="space-y-2 text-sm">
                           <li className="flex items-start">
-                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                             <span>Home BP monitoring</span>
                           </li>
                           <li className="flex items-start">
-                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                             <span>Consistent medication access</span>
                           </li>
                           <li className="flex items-start">
-                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                             <span>Lifestyle modification support</span>
                           </li>
                         </ul>
@@ -213,7 +213,7 @@ export default function HealthOutcomesSection() {
                   <CardContent>
                     <div className="aspect-[16/9] bg-slate-50 rounded-lg flex items-center justify-center mb-6">
                       <div className="text-center p-8">
-                        <BarChart3 className="h-16 w-16 mx-auto text-primary mb-4" />
+                        <BarChart3 className="h-16 w-16 mx-auto text-[#0070f3] mb-4" />
                         <p className="text-gray-500">Interactive chart showing blood pressure control rates</p>
                         <p className="text-xs text-gray-400 mt-2">
                           (Visualization would appear here in the actual implementation)
@@ -258,7 +258,7 @@ export default function HealthOutcomesSection() {
                 <Card className="lg:col-span-1">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <TrendingUp className="h-5 w-5 text-primary" />
+                      <TrendingUp className="h-5 w-5 text-[#0070f3]" />
                       Maternal Care Outcomes
                     </CardTitle>
                     <CardDescription>Impact of our maternal care bundle on mother and child health</CardDescription>
@@ -268,7 +268,7 @@ export default function HealthOutcomesSection() {
                       <div>
                         <h4 className="text-sm font-medium text-gray-500 mb-1">Prenatal Visit Completion</h4>
                         <div className="flex items-end">
-                          <span className="text-3xl font-bold text-primary">94%</span>
+                          <span className="text-3xl font-bold text-[#0070f3]">94%</span>
                           <span className="text-sm text-green-600 ml-2">↑ 62%</span>
                         </div>
                         <p className="text-xs text-gray-500 mt-1">Mothers completing all recommended visits</p>
@@ -277,7 +277,7 @@ export default function HealthOutcomesSection() {
                       <div>
                         <h4 className="text-sm font-medium text-gray-500 mb-1">Institutional Deliveries</h4>
                         <div className="flex items-end">
-                          <span className="text-3xl font-bold text-primary">89%</span>
+                          <span className="text-3xl font-bold text-[#0070f3]">89%</span>
                           <span className="text-sm text-green-600 ml-2">↑ 53%</span>
                         </div>
                         <p className="text-xs text-gray-500 mt-1">Compared to regional average</p>
@@ -286,7 +286,7 @@ export default function HealthOutcomesSection() {
                       <div>
                         <h4 className="text-sm font-medium text-gray-500 mb-1">Anemia Reduction</h4>
                         <div className="flex items-end">
-                          <span className="text-3xl font-bold text-primary">68%</span>
+                          <span className="text-3xl font-bold text-[#0070f3]">68%</span>
                           <span className="text-sm text-green-600 ml-2">↓ 68%</span>
                         </div>
                         <p className="text-xs text-gray-500 mt-1">Reduction in maternal anemia cases</p>
@@ -296,15 +296,15 @@ export default function HealthOutcomesSection() {
                         <h4 className="font-medium mb-2">Key Factors</h4>
                         <ul className="space-y-2 text-sm">
                           <li className="flex items-start">
-                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                             <span>Regular prenatal check-ups</span>
                           </li>
                           <li className="flex items-start">
-                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                             <span>Nutritional supplements</span>
                           </li>
                           <li className="flex items-start">
-                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                             <span>Birth preparedness counseling</span>
                           </li>
                         </ul>
@@ -323,7 +323,7 @@ export default function HealthOutcomesSection() {
                   <CardContent>
                     <div className="aspect-[16/9] bg-slate-50 rounded-lg flex items-center justify-center mb-6">
                       <div className="text-center p-8">
-                        <PieChart className="h-16 w-16 mx-auto text-primary mb-4" />
+                        <PieChart className="h-16 w-16 mx-auto text-[#0070f3] mb-4" />
                         <p className="text-gray-500">Interactive chart showing maternal and infant health outcomes</p>
                         <p className="text-xs text-gray-400 mt-2">
                           (Visualization would appear here in the actual implementation)
@@ -365,7 +365,7 @@ export default function HealthOutcomesSection() {
           </Tabs>
 
           <div className="mt-12 text-center">
-            <Button size="lg" className="bg-primary">
+            <Button size="lg" className="bg-[#0070f3]">
               View All Health Outcome Reports
             </Button>
           </div>

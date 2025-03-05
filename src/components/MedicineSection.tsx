@@ -86,7 +86,7 @@ export default function MedicineSection() {
     <section id="medicines" className="py-16">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-primary mb-4">Affordable Generic Medicines</h2>
+          <h2 className="text-3xl font-bold text-[#0070f3] mb-4">Affordable Generic Medicines</h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Access quality generic medications at affordable prices. Upload your prescription or search for specific
             medicines.
@@ -138,10 +138,10 @@ export default function MedicineSection() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-gray-600">{medicine.description}</p>
-                    <p className="text-lg font-bold text-primary mt-2">₹{medicine.price}</p>
+                    <p className="text-lg font-bold text-[#0070f3] mt-2">₹{medicine.price}</p>
                   </CardContent>
                   <CardFooter>
-                    <Button className="w-full flex items-center gap-2">
+                    <Button className="w-full flex items-center gap-2 bg-[#0070f3]">
                       <ShoppingCart className="h-4 w-4" />
                       Add to Cart
                     </Button>

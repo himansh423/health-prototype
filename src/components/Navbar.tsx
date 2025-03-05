@@ -14,44 +14,44 @@ export default function Navbar() {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link href="/" className="flex-shrink-0 flex items-center">
-              <span className="text-2xl font-bold text-primary">HealthCare+</span>
+              <span className="text-2xl font-bold text-[#0070f3]">HealthCare+</span>
             </Link>
             <div className="hidden md:ml-10 md:flex md:space-x-8">
-              <Link href="/" className="text-primary-foreground hover:text-primary px-3 py-2 text-sm font-medium">
+              <Link href="/" className="hover:text-primary px-3 py-2 text-sm font-medium text-[#0070f3]">
                 Home
               </Link>
               <Link
                 href="#hospitals"
-                className="text-primary-foreground hover:text-primary px-3 py-2 text-sm font-medium"
+                className="hover:text-primary px-3 py-2 text-sm font-medium text-[#0070f3]"
               >
                 Hospitals
               </Link>
               <Link
                 href="#medicines"
-                className="text-primary-foreground hover:text-primary px-3 py-2 text-sm font-medium"
+                className="hover:text-primary px-3 py-2 text-sm font-medium text-[#0070f3]"
               >
                 Medicines
               </Link>
               <Link
                 href="#subscriptions"
-                className="text-primary-foreground hover:text-primary px-3 py-2 text-sm font-medium"
+                className="hover:text-primary px-3 py-2 text-sm font-medium text-[#0070f3]"
               >
                 Subscriptions
               </Link>
-              <Link href="#about" className="text-primary-foreground hover:text-primary px-3 py-2 text-sm font-medium">
+              <Link href="#about" className="text-[#0070f3] hover:text-primary px-3 py-2 text-sm font-medium">
                 About Us
               </Link>
             </div>
           </div>
           <div className="hidden md:flex items-center space-x-4">
             <Button variant="ghost" size="icon">
-              <ShoppingCart className="h-5 w-5" />
+              <ShoppingCart className="h-5 w-5 text-[#0070f3]" />
             </Button>
-            <Button variant="outline" className="flex items-center gap-2">
+            <Button variant="outline" className="flex items-center gap-2  text-[#0070f3] ">
               <User className="h-4 w-4" />
               Sign In
             </Button>
-            <Button>Get Started</Button>
+            <Button className="bg-[#0070f3]">Get Started</Button>
           </div>
           <div className="flex items-center md:hidden">
             <button

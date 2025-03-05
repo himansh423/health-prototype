@@ -32,10 +32,10 @@ export default function AIFinancingSection() {
     <section id="financing" className="py-16 bg-slate-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center p-2 bg-primary/10 rounded-full mb-4">
-            <BrainCircuit className="h-6 w-6 text-primary" />
+          <div className="inline-flex items-center justify-center p-2 bg-[#0070f3]/10 rounded-full mb-4">
+            <BrainCircuit className="h-6 w-6 text-[#0070f3]" />
           </div>
-          <h2 className="text-3xl font-bold text-primary mb-4">AI-Powered Financing Solutions</h2>
+          <h2 className="text-3xl font-bold text-[#0070f3] mb-4">AI-Powered Financing Solutions</h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Our intelligent system analyzes your needs and financial situation to recommend the most suitable healthcare
             financing option for you and your family.
@@ -55,7 +55,7 @@ export default function AIFinancingSection() {
                     <label className="text-sm font-medium">Monthly Household Income</label>
                     <span className="text-sm font-medium">₹{incomeRange[0].toLocaleString()}</span>
                   </div>
-                  <Slider value={incomeRange} min={5000} max={50000} step={1000} onValueChange={setIncomeRange} />
+                  <Slider className="bg-[#0070f3]" value={incomeRange} min={5000} max={50000} step={1000} onValueChange={setIncomeRange} />
                   <div className="flex justify-between text-xs text-gray-500">
                     <span>₹5,000</span>
                     <span>₹50,000</span>
@@ -79,21 +79,21 @@ export default function AIFinancingSection() {
                   <div className="grid grid-cols-3 gap-2">
                     <Button
                       variant={healthCondition === "healthy" ? "default" : "outline"}
-                      className="h-auto py-2"
+                      className={`h-auto py-2 ${healthCondition === "healthy"?'bg-[#0070f3] text-white':'bg-white text-black'}`}
                       onClick={() => setHealthCondition("healthy")}
                     >
                       Healthy
                     </Button>
                     <Button
                       variant={healthCondition === "minor" ? "default" : "outline"}
-                      className="h-auto py-2"
+                      className={`h-auto py-2 ${healthCondition === "minor"?'bg-[#0070f3] text-white':'bg-white text-black'}`}
                       onClick={() => setHealthCondition("minor")}
                     >
                       Minor
                     </Button>
                     <Button
                       variant={healthCondition === "chronic" ? "default" : "outline"}
-                      className="h-auto py-2"
+                      className={`h-auto py-2 ${healthCondition === "chronic"?'bg-[#0070f3] text-white':'bg-white text-black'}`}
                       onClick={() => setHealthCondition("chronic")}
                     >
                       Chronic
@@ -118,16 +118,16 @@ export default function AIFinancingSection() {
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger
                   value="subscription"
-                  className="data-[state=active]:bg-primary data-[state=active]:text-white"
+                  className="data-[state=active]:bg-[#0070f3] data-[state=active]:text-white"
                 >
                   Subscription
                 </TabsTrigger>
-                <TabsTrigger value="tiered" className="data-[state=active]:bg-primary data-[state=active]:text-white">
+                <TabsTrigger value="tiered" className="data-[state=active]:bg-[#0070f3] data-[state=active]:text-white">
                   Tiered Pricing
                 </TabsTrigger>
                 <TabsTrigger
                   value="microinsurance"
-                  className="data-[state=active]:bg-primary data-[state=active]:text-white"
+                  className="data-[state=active]:bg-[#0070f3] data-[state=active]:text-white"
                 >
                   Microinsurance
                 </TabsTrigger>
@@ -158,7 +158,7 @@ export default function AIFinancingSection() {
                 <Card>
                   <CardHeader>
                     <div className="flex items-center gap-3">
-                      <Calendar className="h-6 w-6 text-primary" />
+                      <Calendar className="h-6 w-6 text-[#0070f3]" />
                       <div>
                         <CardTitle>Monthly Subscription Model</CardTitle>
                         <CardDescription>Fixed monthly payments for continuous healthcare access</CardDescription>
@@ -174,25 +174,25 @@ export default function AIFinancingSection() {
 
                       <ul className="space-y-2">
                         <li className="flex items-start">
-                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                           <span>Unlimited access to generic medications for covered conditions</span>
                         </li>
                         <li className="flex items-start">
-                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                           <span>Regular diagnostic tests as per your health plan</span>
                         </li>
                         <li className="flex items-start">
-                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                           <span>Teleconsultations with healthcare providers</span>
                         </li>
                         <li className="flex items-start">
-                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                           <span>Health monitoring and personalized recommendations</span>
                         </li>
                       </ul>
 
                       <div className="bg-blue-50 p-4 rounded-lg">
-                        <h4 className="font-medium text-primary mb-2">Why This Works For You</h4>
+                        <h4 className="font-medium text-[#0070f3] mb-2">Why This Works For You</h4>
                         <p className="text-sm text-gray-700">
                           Based on your income of ₹{incomeRange[0].toLocaleString()}, family size of {familySize[0]},
                           and health condition, a subscription model provides the most cost-effective and comprehensive
@@ -202,7 +202,7 @@ export default function AIFinancingSection() {
                     </div>
                   </CardContent>
                   <CardFooter>
-                    <Button className="w-full">View Subscription Plans</Button>
+                    <Button className="w-full bg-[#0070f3]">View Subscription Plans</Button>
                   </CardFooter>
                 </Card>
               </TabsContent>
@@ -211,7 +211,7 @@ export default function AIFinancingSection() {
                 <Card>
                   <CardHeader>
                     <div className="flex items-center gap-3">
-                      <Calculator className="h-6 w-6 text-primary" />
+                      <Calculator className="h-6 w-6 text-[#0070f3]" />
                       <div>
                         <CardTitle>Tiered Pricing Model</CardTitle>
                         <CardDescription>Pay based on your income level and healthcare needs</CardDescription>
@@ -245,21 +245,21 @@ export default function AIFinancingSection() {
 
                       <ul className="space-y-2">
                         <li className="flex items-start">
-                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                           <span>Same quality healthcare regardless of tier</span>
                         </li>
                         <li className="flex items-start">
-                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                           <span>Subsidized rates for lower income households</span>
                         </li>
                         <li className="flex items-start">
-                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                           <span>Flexible payment options based on seasonal income</span>
                         </li>
                       </ul>
 
                       <div className="bg-blue-50 p-4 rounded-lg">
-                        <h4 className="font-medium text-primary mb-2">Why This Works For You</h4>
+                        <h4 className="font-medium text-[#0070f3] mb-2">Why This Works For You</h4>
                         <p className="text-sm text-gray-700">
                           With your income level and family size, our tiered pricing ensures you pay a fair amount while
                           still receiving comprehensive healthcare coverage for all family members.
@@ -268,7 +268,7 @@ export default function AIFinancingSection() {
                     </div>
                   </CardContent>
                   <CardFooter>
-                    <Button className="w-full">Check Your Tier</Button>
+                    <Button className="w-full bg-[#0070f3]">Check Your Tier</Button>
                   </CardFooter>
                 </Card>
               </TabsContent>
@@ -277,7 +277,7 @@ export default function AIFinancingSection() {
                 <Card>
                   <CardHeader>
                     <div className="flex items-center gap-3">
-                      <Landmark className="h-6 w-6 text-primary" />
+                      <Landmark className="h-6 w-6 text-[#0070f3]" />
                       <div>
                         <CardTitle>Microinsurance Model</CardTitle>
                         <CardDescription>Low-cost insurance for essential healthcare needs</CardDescription>
@@ -290,19 +290,19 @@ export default function AIFinancingSection() {
 
                       <ul className="space-y-2">
                         <li className="flex items-start">
-                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                           <span>Low premiums starting at just ₹100 per month</span>
                         </li>
                         <li className="flex items-start">
-                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                           <span>Coverage for basic medications and diagnostic tests</span>
                         </li>
                         <li className="flex items-start">
-                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                           <span>Additional coverage for chronic conditions</span>
                         </li>
                         <li className="flex items-start">
-                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                           <span>No paperwork, simple claims process via mobile</span>
                         </li>
                       </ul>
@@ -321,7 +321,7 @@ export default function AIFinancingSection() {
                       </div>
 
                       <div className="bg-blue-50 p-4 rounded-lg">
-                        <h4 className="font-medium text-primary mb-2">Why This Works For You</h4>
+                        <h4 className="font-medium text-[#0070f3] mb-2">Why This Works For You</h4>
                         <p className="text-sm text-gray-700">
                           With your chronic health condition and income level, microinsurance provides targeted coverage
                           for your specific healthcare needs at the most affordable rate.
@@ -330,7 +330,7 @@ export default function AIFinancingSection() {
                     </div>
                   </CardContent>
                   <CardFooter>
-                    <Button className="w-full">Explore Microinsurance</Button>
+                    <Button className="w-full bg-[#0070f3]">Explore Microinsurance</Button>
                   </CardFooter>
                 </Card>
               </TabsContent>

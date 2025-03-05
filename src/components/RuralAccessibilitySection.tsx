@@ -8,10 +8,10 @@ export default function RuralAccessibilitySection() {
     <section className="py-16 bg-slate-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center p-2 bg-primary/10 rounded-full mb-4">
-            <MapPin className="h-6 w-6 text-primary" />
+          <div className="inline-flex items-center justify-center p-2 bg-[#0070f3]/10 rounded-full mb-4">
+            <MapPin className="h-6 w-6 text-[#0070f3]" />
           </div>
-          <h2 className="text-3xl font-bold text-primary mb-4">Rural Accessibility Features</h2>
+          <h2 className="text-3xl font-bold text-[#0070f3] mb-4">Rural Accessibility Features</h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Our platform is specifically designed to overcome connectivity and accessibility challenges faced by rural
             communities.
@@ -24,7 +24,7 @@ export default function RuralAccessibilitySection() {
               <div className="flex items-start justify-between">
                 <div>
                   <CardTitle className="flex items-center gap-2">
-                    <WifiOff className="h-5 w-5 text-primary" />
+                    <WifiOff className="h-5 w-5 text-[#0070f3]" />
                     Offline Mode
                   </CardTitle>
                   <CardDescription>Access healthcare without internet</CardDescription>
@@ -41,15 +41,15 @@ export default function RuralAccessibilitySection() {
               </p>
               <ul className="space-y-2">
                 <li className="flex items-start text-sm">
-                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                   <span>Pre-downloaded medical records and prescriptions</span>
                 </li>
                 <li className="flex items-start text-sm">
-                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                   <span>Offline medication reminders and dosage information</span>
                 </li>
                 <li className="flex items-start text-sm">
-                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                   <span>Automatic sync when connectivity is restored</span>
                 </li>
               </ul>
@@ -61,7 +61,7 @@ export default function RuralAccessibilitySection() {
               <div className="flex items-start justify-between">
                 <div>
                   <CardTitle className="flex items-center gap-2">
-                    <Languages className="h-5 w-5 text-primary" />
+                    <Languages className="h-5 w-5 text-[#0070f3]" />
                     Multilingual Support
                   </CardTitle>
                   <CardDescription>Content in local languages</CardDescription>
@@ -78,15 +78,15 @@ export default function RuralAccessibilitySection() {
               </p>
               <ul className="space-y-2">
                 <li className="flex items-start text-sm">
-                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                   <span>Interface available in 12 Indian languages</span>
                 </li>
                 <li className="flex items-start text-sm">
-                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                   <span>Voice-based navigation for low literacy users</span>
                 </li>
                 <li className="flex items-start text-sm">
-                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                   <span>Pictorial guides for medication and health instructions</span>
                 </li>
               </ul>
@@ -98,7 +98,7 @@ export default function RuralAccessibilitySection() {
               <div className="flex items-start justify-between">
                 <div>
                   <CardTitle className="flex items-center gap-2">
-                    <Phone className="h-5 w-5 text-primary" />
+                    <Phone className="h-5 w-5 text-[#0070f3]" />
                     Basic Phone Access
                   </CardTitle>
                   <CardDescription>Works on feature phones via SMS</CardDescription>
@@ -115,15 +115,15 @@ export default function RuralAccessibilitySection() {
               </p>
               <ul className="space-y-2">
                 <li className="flex items-start text-sm">
-                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                   <span>SMS reminders for medication and appointments</span>
                 </li>
                 <li className="flex items-start text-sm">
-                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                   <span>USSD codes for checking medicine availability</span>
                 </li>
                 <li className="flex items-start text-sm">
-                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                   <span>IVR system for health queries and emergencies</span>
                 </li>
               </ul>
@@ -135,7 +135,7 @@ export default function RuralAccessibilitySection() {
               <div className="flex items-start justify-between">
                 <div>
                   <CardTitle className="flex items-center gap-2">
-                    <Smartphone className="h-5 w-5 text-primary" />
+                    <Smartphone className="h-5 w-5 text-[#0070f3]" />
                     Low-Resource App
                   </CardTitle>
                   <CardDescription>Works on entry-level smartphones</CardDescription>
@@ -151,15 +151,15 @@ export default function RuralAccessibilitySection() {
               </p>
               <ul className="space-y-2">
                 <li className="flex items-start text-sm">
-                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                   <span>Less than 10MB app size with progressive loading</span>
                 </li>
                 <li className="flex items-start text-sm">
-                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                   <span>Minimal battery consumption for all-day use</span>
                 </li>
                 <li className="flex items-start text-sm">
-                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                   <span>Works on 2G networks with minimal data usage</span>
                 </li>
               </ul>
@@ -171,7 +171,7 @@ export default function RuralAccessibilitySection() {
               <div className="flex items-start justify-between">
                 <div>
                   <CardTitle className="flex items-center gap-2">
-                    <Wifi className="h-5 w-5 text-primary" />
+                    <Wifi className="h-5 w-5 text-[#0070f3]" />
                     Community Hotspots
                   </CardTitle>
                   <CardDescription>Village-level access points</CardDescription>
@@ -188,15 +188,15 @@ export default function RuralAccessibilitySection() {
               </p>
               <ul className="space-y-2">
                 <li className="flex items-start text-sm">
-                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                   <span>Solar-powered Wi-Fi hotspots at village centers</span>
                 </li>
                 <li className="flex items-start text-sm">
-                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                   <span>Trained local facilitators to assist with technology</span>
                 </li>
                 <li className="flex items-start text-sm">
-                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2"></span>
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#0070f3] mt-1.5 mr-2"></span>
                   <span>Periodic health camps with digital registration</span>
                 </li>
               </ul>
@@ -205,27 +205,27 @@ export default function RuralAccessibilitySection() {
         </div>
 
         <div className="mt-12 bg-white p-6 rounded-lg shadow-md max-w-4xl mx-auto">
-          <h3 className="text-xl font-semibold mb-4 text-primary">Our Rural Coverage</h3>
+          <h3 className="text-xl font-semibold mb-4 text-[#0070f3]">Our Rural Coverage</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div>
-              <p className="text-3xl font-bold text-primary">1,200+</p>
+              <p className="text-3xl font-bold text-[#0070f3]">1,200+</p>
               <p className="text-gray-600">Villages Covered</p>
             </div>
             <div>
-              <p className="text-3xl font-bold text-primary">42</p>
+              <p className="text-3xl font-bold text-[#0070f3]">42</p>
               <p className="text-gray-600">Districts</p>
             </div>
             <div>
-              <p className="text-3xl font-bold text-primary">8</p>
+              <p className="text-3xl font-bold text-[#0070f3]">8</p>
               <p className="text-gray-600">States</p>
             </div>
             <div>
-              <p className="text-3xl font-bold text-primary">250,000+</p>
+              <p className="text-3xl font-bold text-[#0070f3]">250,000+</p>
               <p className="text-gray-600">Rural Users</p>
             </div>
           </div>
-          <div className="mt-6 text-center">
-            <Button>Check Coverage In Your Area</Button>
+          <div className="mt-6 text-center ">
+            <Button className="bg-[#0070f3]">Check Coverage In Your Area</Button>
           </div>
         </div>
       </div>

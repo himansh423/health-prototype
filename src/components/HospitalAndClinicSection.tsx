@@ -1,6 +1,13 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { MapPin, Star, Clock } from "lucide-react"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { MapPin, Star, Clock } from "lucide-react";
 
 const specialistTypes = [
   {
@@ -21,7 +28,8 @@ const specialistTypes = [
   {
     id: 2,
     type: "Gynecologists",
-    description: "Women's health specialists for reproductive and maternal care",
+    description:
+      "Women's health specialists for reproductive and maternal care",
     image: "/placeholder.svg?height=200&width=300",
     rating: 4.9,
     hospitals: [
@@ -63,23 +71,29 @@ const specialistTypes = [
       },
     ],
   },
-]
+];
 
 export default function HospitalAndClinicSection() {
   return (
     <section id="hospitals" className="py-16 bg-slate-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-primary mb-4">Hospitals & Specialist Clinics</h2>
+          <h2 className="text-3xl font-bold  mb-4 text-[#0070f3]">
+            Hospitals & Specialist Clinics
+          </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Connect with specialized healthcare providers in your area. Our network includes top-rated specialists to
-            address your specific health needs.
+            Connect with specialized healthcare providers in your area. Our
+            network includes top-rated specialists to address your specific
+            health needs.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {specialistTypes.map((specialist) => (
-            <Card key={specialist.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+            <Card
+              key={specialist.id}
+              className="overflow-hidden hover:shadow-lg transition-shadow"
+            >
               <div className="relative h-48">
                 <img
                   src={specialist.image || "/placeholder.svg"}
@@ -98,8 +112,13 @@ export default function HospitalAndClinicSection() {
               <CardContent>
                 <div className="space-y-3">
                   {specialist.hospitals.map((hospital, idx) => (
-                    <div key={idx} className="border-b pb-3 last:border-0 last:pb-0">
-                      <h4 className="font-semibold text-primary">{hospital.name}</h4>
+                    <div
+                      key={idx}
+                      className="border-b pb-3 last:border-0 last:pb-0"
+                    >
+                      <h4 className="font-semibold text-[#0070f3]">
+                        {hospital.name}
+                      </h4>
                       <div className="flex items-center text-sm text-gray-500 mt-1">
                         <MapPin className="h-4 w-4 mr-1" />
                         <span>{hospital.location}</span>
@@ -115,7 +134,7 @@ export default function HospitalAndClinicSection() {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button className="w-full">Book Appointment</Button>
+                <Button className="w-full bg-[#0070f3]">Book Appointment</Button>
               </CardFooter>
             </Card>
           ))}
@@ -125,10 +144,9 @@ export default function HospitalAndClinicSection() {
           <Button variant="outline" className="mr-4">
             View All Specialists
           </Button>
-          <Button>Find Nearest Clinic</Button>
+          <Button className="bg-[#0070f3]">Find Nearest Clinic</Button>
         </div>
       </div>
     </section>
-  )
+  );
 }
-

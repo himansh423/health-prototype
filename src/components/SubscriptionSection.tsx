@@ -61,7 +61,7 @@ export default function SubscriptionSection() {
     <section id="subscriptions" className="py-16 bg-slate-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-primary mb-4">Affordable Subscription Plans</h2>
+          <h2 className="text-3xl font-bold text-[#0070f3] mb-4">Affordable Subscription Plans</h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Choose a subscription plan that fits your needs. All plans include access to essential healthcare services
             at affordable rates.
@@ -75,7 +75,7 @@ export default function SubscriptionSection() {
               className={`relative overflow-hidden ${plan.recommended ? "border-primary shadow-lg" : ""}`}
             >
               {plan.recommended && (
-                <div className="absolute top-0 right-0 bg-primary text-white px-4 py-1 text-sm font-medium">
+                <div className="absolute top-0 right-0 bg-[#0070f3] text-white px-4 py-1 text-sm font-medium">
                   Recommended
                 </div>
               )}
@@ -99,7 +99,7 @@ export default function SubscriptionSection() {
               </CardContent>
               <CardFooter>
                 <Button
-                  className={`w-full ${plan.recommended ? "bg-primary" : ""}`}
+                  className={`w-full ${plan.recommended ? "bg-[#0070f3]" : ""}`}
                   variant={plan.recommended ? "default" : "outline"}
                 >
                   {plan.buttonText}

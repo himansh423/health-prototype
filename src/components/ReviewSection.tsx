@@ -77,7 +77,7 @@ export default function ReviewSection() {
     <section className="py-16">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-primary mb-4">What Our Users Say</h2>
+          <h2 className="text-3xl font-bold text-[#0070f3] mb-4">What Our Users Say</h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Hear from people who have transformed their healthcare experience with our affordable solutions.
           </p>

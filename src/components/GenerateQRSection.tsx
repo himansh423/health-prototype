@@ -14,7 +14,7 @@ export default function GenerateQRSection() {
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-primary mb-4">Track Your Health Journey</h2>
+            <h2 className="text-3xl font-bold text-[#0070f3] mb-4">Track Your Health Journey</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               Generate a personalized QR code to access your medical history, prescriptions, and test results anytime,
               anywhere.
@@ -27,8 +27,8 @@ export default function GenerateQRSection() {
 
               <div className="space-y-6">
                 <div className="flex">
-                  <div className="flex-shrink-0 h-12 w-12 bg-primary/10 rounded-full flex items-center justify-center mr-4">
-                    <User className="h-6 w-6 text-primary" />
+                  <div className="flex-shrink-0 h-12 w-12 bg-[#0070f3]/10 rounded-full flex items-center justify-center mr-4">
+                    <User className="h-6 w-6 text-[#0070f3]" />
                   </div>
                   <div>
                     <h4 className="text-lg font-medium">Personal Health Profile</h4>
@@ -40,8 +40,8 @@ export default function GenerateQRSection() {
                 </div>
 
                 <div className="flex">
-                  <div className="flex-shrink-0 h-12 w-12 bg-primary/10 rounded-full flex items-center justify-center mr-4">
-                    <FileText className="h-6 w-6 text-primary" />
+                  <div className="flex-shrink-0 h-12 w-12 bg-[#0070f3]/10 rounded-full flex items-center justify-center mr-4">
+                    <FileText className="h-6 w-6 text-[#0070f3]" />
                   </div>
                   <div>
                     <h4 className="text-lg font-medium">Medical Reports</h4>
@@ -52,8 +52,8 @@ export default function GenerateQRSection() {
                 </div>
 
                 <div className="flex">
-                  <div className="flex-shrink-0 h-12 w-12 bg-primary/10 rounded-full flex items-center justify-center mr-4">
-                    <History className="h-6 w-6 text-primary" />
+                  <div className="flex-shrink-0 h-12 w-12 bg-[#0070f3]/10 rounded-full flex items-center justify-center mr-4">
+                    <History className="h-6 w-6 text-[#0070f3]" />
                   </div>
                   <div>
                     <h4 className="text-lg font-medium">Treatment History</h4>
@@ -64,7 +64,7 @@ export default function GenerateQRSection() {
                 </div>
               </div>
 
-              <Button className="mt-8 w-full sm:w-auto" onClick={() => setQrGenerated(true)}>
+              <Button className="mt-8 w-full bg-[#0070f3] sm:w-auto" onClick={() => setQrGenerated(true)}>
                 Generate My Health QR
               </Button>
             </div>

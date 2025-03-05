@@ -7,10 +7,10 @@ export default function GovernmentIntegrationSection() {
     <section className="py-16">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center p-2 bg-primary/10 rounded-full mb-4">
-            <Building2 className="h-6 w-6 text-primary" />
+          <div className="inline-flex items-center justify-center p-2 bg-[#0070f3]/10 rounded-full mb-4">
+            <Building2 className="h-6 w-6 text-[#0070f3]" />
           </div>
-          <h2 className="text-3xl font-bold text-primary mb-4">Government Healthcare Integration</h2>
+          <h2 className="text-3xl font-bold text-[#0070f3] mb-4">Government Healthcare Integration</h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Our platform seamlessly integrates with government healthcare schemes and infrastructure to maximize
             benefits for rural communities.
@@ -21,7 +21,7 @@ export default function GovernmentIntegrationSection() {
           <Card className="lg:col-span-1 bg-gradient-to-br from-blue-50 to-white">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <FileCheck className="h-5 w-5 text-primary" />
+                <FileCheck className="h-5 w-5 text-[#0070f3]" />
                 Supported Government Schemes
               </CardTitle>
               <CardDescription>We integrate with these national healthcare programs</CardDescription>
@@ -30,7 +30,7 @@ export default function GovernmentIntegrationSection() {
               <ul className="space-y-3">
                 <li className="flex items-center p-3 bg-white rounded-lg shadow-sm">
                   <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3 flex-shrink-0">
-                    <span className="font-semibold text-primary">AB</span>
+                    <span className="font-semibold text-[#0070f3]">AB</span>
                   </div>
                   <div>
                     <h4 className="font-medium">Ayushman Bharat</h4>
@@ -39,7 +39,7 @@ export default function GovernmentIntegrationSection() {
                 </li>
                 <li className="flex items-center p-3 bg-white rounded-lg shadow-sm">
                   <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3 flex-shrink-0">
-                    <span className="font-semibold text-primary">PM</span>
+                    <span className="font-semibold text-[#0070f3]">PM</span>
                   </div>
                   <div>
                     <h4 className="font-medium">PM-JAY</h4>
@@ -48,7 +48,7 @@ export default function GovernmentIntegrationSection() {
                 </li>
                 <li className="flex items-center p-3 bg-white rounded-lg shadow-sm">
                   <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3 flex-shrink-0">
-                    <span className="font-semibold text-primary">NHM</span>
+                    <span className="font-semibold text-[#0070f3]">NHM</span>
                   </div>
                   <div>
                     <h4 className="font-medium">National Health Mission</h4>
@@ -57,7 +57,7 @@ export default function GovernmentIntegrationSection() {
                 </li>
                 <li className="flex items-center p-3 bg-white rounded-lg shadow-sm">
                   <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3 flex-shrink-0">
-                    <span className="font-semibold text-primary">PMSBY</span>
+                    <span className="font-semibold text-[#0070f3]">PMSBY</span>
                   </div>
                   <div>
                     <h4 className="font-medium">Suraksha Bima Yojana</h4>
@@ -74,7 +74,7 @@ export default function GovernmentIntegrationSection() {
           <Card className="lg:col-span-2">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Users className="h-5 w-5 text-primary" />
+                <Users className="h-5 w-5 text-[#0070f3]" />
                 Integration Benefits
               </CardTitle>
               <CardDescription>How our platform enhances government healthcare initiatives</CardDescription>
@@ -126,25 +126,25 @@ export default function GovernmentIntegrationSection() {
                 <h4 className="font-medium mb-2">How It Works</h4>
                 <ol className="space-y-2">
                   <li className="flex items-start">
-                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-primary text-white text-xs mr-2 flex-shrink-0">
+                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#0070f3] text-white text-xs mr-2 flex-shrink-0">
                       1
                     </span>
                     <span className="text-sm">Link your government ID (Aadhaar) to your profile</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-primary text-white text-xs mr-2 flex-shrink-0">
+                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#0070f3] text-white text-xs mr-2 flex-shrink-0">
                       2
                     </span>
                     <span className="text-sm">Our system verifies your eligibility for various schemes</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-primary text-white text-xs mr-2 flex-shrink-0">
+                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#0070f3] text-white text-xs mr-2 flex-shrink-0">
                       3
                     </span>
                     <span className="text-sm">Benefits are automatically applied to your healthcare costs</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-primary text-white text-xs mr-2 flex-shrink-0">
+                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#0070f3] text-white text-xs mr-2 flex-shrink-0">
                       4
                     </span>
                     <span className="text-sm">Receive a consolidated statement of all benefits utilized</span>
@@ -156,36 +156,36 @@ export default function GovernmentIntegrationSection() {
         </div>
 
         <div className="bg-white p-6 rounded-lg shadow-md max-w-4xl mx-auto">
-          <h3 className="text-xl font-semibold mb-4 text-primary">Public-Private Partnership Model</h3>
+          <h3 className="text-xl font-semibold mb-4 text-[#0070f3]">Public-Private Partnership Model</h3>
           <p className="text-gray-600 mb-6">
             Our platform operates on a unique public-private partnership model that enhances government healthcare
             delivery while ensuring sustainability:
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="text-center p-4">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Building2 className="h-8 w-8 text-primary" />
+              <div className="w-16 h-16 bg-[#0070f3]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Building2 className="h-8 w-8 text-[#0070f3]" />
               </div>
               <h4 className="font-medium mb-2">Government</h4>
               <p className="text-sm text-gray-500">Provides policy framework, subsidies, and infrastructure access</p>
             </div>
             <div className="text-center p-4">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <FileCheck className="h-8 w-8 text-primary" />
+              <div className="w-16 h-16 bg-[#0070f3]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FileCheck className="h-8 w-8 text-[#0070f3]" />
               </div>
               <h4 className="font-medium mb-2">Our Platform</h4>
               <p className="text-sm text-gray-500">Delivers technology, financing solutions, and quality assurance</p>
             </div>
             <div className="text-center p-4">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="h-8 w-8 text-primary" />
+              <div className="w-16 h-16 bg-[#0070f3]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Users className="h-8 w-8 text-[#0070f3]" />
               </div>
               <h4 className="font-medium mb-2">Community</h4>
               <p className="text-sm text-gray-500">Participates through local health workers and feedback mechanisms</p>
             </div>
           </div>
           <div className="mt-6 text-center">
-            <Button className="group">
+            <Button className="group bg-[#0070f3]">
               <span>Learn More About Our Government Partnerships</span>
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Button>
