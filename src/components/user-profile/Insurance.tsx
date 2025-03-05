@@ -173,7 +173,7 @@ export function Insurance({ userData }: InsuranceProps) {
                     <Badge className={scheme.status === 'Active' ? 'bg-[#43C6B8]' : 'bg-[#F97316]'}>
                       {scheme.status}
                     </Badge>
-                  </div>
+                  </div> 
                   <div className="p-3 grid gap-4 md:grid-cols-2">
                     <div>
                       <div className="text-sm text-muted-foreground mb-1">Coverage Details</div>
