@@ -32,6 +32,7 @@ const UserSchema = new Schema({
   isVerified: {
     type: Boolean,
   },
+  appointments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Hospitals" }],
 });
 
 const User = mongoose.models.Users || mongoose.model("Users", UserSchema);
