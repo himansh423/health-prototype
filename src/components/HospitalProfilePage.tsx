@@ -1,8 +1,11 @@
 "use client";
 
+import type React from "react";
+
 import { CardFooter } from "@/components/ui/card";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -35,180 +38,218 @@ import {
   Sparkles,
   HeartPulse,
   Syringe,
-  Brain,
   Microscope,
   AlertCircle,
   Check,
   Award,
+  Loader2,
 } from "lucide-react";
 
-const hospitalData = {
+interface HospitalData {
   basicDetails: {
-    name: "City General Hospital",
-    type: "Government",
-    id: "CGH001",
-    profilePicture: "/hospital-profile.jpg",
-    coverPhoto: "/hospital-cover.jpg",
     location: {
-      address: "123 Healthcare Avenue, Medical District",
-      city: "Metropolis",
-      state: "Health State",
-      pincode: "100001",
-    },
+      address: string;
+      city: string;
+      state: string;
+      pincode: string;
+    };
     contact: {
-      phone: "+91 1234567890",
-      email: "info@citygeneralhospital.gov.in",
-      website: "www.citygeneralhospital.gov.in",
-      helpline: "1800-123-4567",
-    },
-    mapsLink: "https://goo.gl/maps/example",
-  },
+      phone: string;
+      email: string;
+      website: string;
+      helpline: string;
+    };
+    name: string;
+    type: string;
+    id: string;
+    profilePicture: string;
+    coverPhoto: string;
+    mapsLink: string;
+  };
   generalInfo: {
-    totalBeds: 500,
-    currentAvailableBeds: 75,
-    icuBeds: 50,
-    icuAvailableBeds: 5,
-    ventilators: 30,
-    availableVentilators: 8,
-    emergencyWard: true,
-    opdTimings: "Mon-Sat: 9:00 AM - 5:00 PM",
-    emergencyServices: "24/7",
-    ambulanceAvailable: true,
-    bloodBankAvailable: true,
-    pharmacyAvailable: true,
-    disabledFacilities: [
-      "Wheelchair Access",
-      "Special Assistance",
-      "Braille Signage",
-    ],
-  },
-  departments: [
-    { name: "General Medicine", icon: <Stethoscope className="h-5 w-5" /> },
-    { name: "Pediatrics", icon: <UserPlus className="h-5 w-5" /> },
-    { name: "Orthopedics", icon: <Activity className="h-5 w-5" /> },
-    { name: "Gynecology & Obstetrics", icon: <UserPlus className="h-5 w-5" /> },
-    { name: "Surgery", icon: <Syringe className="h-5 w-5" /> },
-    { name: "Cardiology", icon: <HeartPulse className="h-5 w-5" /> },
-    { name: "Neurology", icon: <Brain className="h-5 w-5" /> },
-    { name: "Oncology", icon: <Microscope className="h-5 w-5" /> },
-    { name: "Nephrology", icon: <Activity className="h-5 w-5" /> },
-    { name: "Radiology", icon: <Syringe className="h-5 w-5" /> },
-    { name: "ENT", icon: <Stethoscope className="h-5 w-5" /> },
-    { name: "Ophthalmology", icon: <Activity className="h-5 w-5" /> },
-    { name: "Dental Services", icon: <Stethoscope className="h-5 w-5" /> },
-    {
-      name: "Physiotherapy & Rehabilitation",
-      icon: <Activity className="h-5 w-5" />,
-    },
-    { name: "Psychiatry", icon: <Brain className="h-5 w-5" /> },
-    { name: "HIV/AIDS Treatment", icon: <Microscope className="h-5 w-5" /> },
-    { name: "COVID-19 Unit", icon: <AlertCircle className="h-5 w-5" /> },
-  ],
-  doctors: [
-    {
-      name: "Dr. Aisha Patel",
-      qualification: "MD, DM (Cardiology)",
-      specialization: "Cardiology",
-      position: "Chief Cardiologist",
-      experience: 15,
-      availability: "Full-time",
-      opdTimings: "Mon, Wed, Fri: 10:00 AM - 2:00 PM",
-      emergencyAvailable: true,
-      photo: "/doctor-aisha.jpg",
-    },
-    {
-      name: "Dr. Rajesh Kumar",
-      qualification: "MS, MCh (Neurosurgery)",
-      specialization: "Neurosurgery",
-      position: "Senior Neurosurgeon",
-      experience: 12,
-      availability: "Full-time",
-      opdTimings: "Tue, Thu, Sat: 11:00 AM - 3:00 PM",
-      emergencyAvailable: true,
-      photo: "/doctor-rajesh.jpg",
-    },
-    // Add more doctors here
-  ],
+    totalBeds: number;
+    currentAvailableBeds: number;
+    icuBeds: number;
+    icuAvailableBeds: number;
+    ventilators: number;
+    availableVentilators: number;
+    emergencyWard: boolean;
+    opdTimings: string;
+    emergencyServices: string;
+    ambulanceAvailable: boolean;
+    bloodBankAvailable: boolean;
+    pharmacyAvailable: boolean;
+    disabledFacilities: string[];
+  };
   performance: {
-    rating: 4.2,
-    totalReviews: 1500,
-    successfulSurgeries: 5000,
-    mortalityRate: "2.1%",
     averagePatients: {
-      daily: 500,
-      monthly: 15000,
-    },
-    achievements: [
-      "Best Government Hospital Award 2022",
-      "COVID-19 Excellence Recognition",
-      "National Quality Assurance Standards Certification",
-    ],
-  },
+      daily: number;
+      monthly: number;
+    };
+    rating: number;
+    totalReviews: number;
+    successfulSurgeries: number;
+    mortalityRate: string;
+    achievements: string[];
+  };
   emergencyCare: {
-    traumaCenter: true,
-    burnUnit: true,
-    neonatalICU: true,
-    dialysisCenter: true,
-    organTransplant: false,
-    mentalHealthHelpline: true,
-  },
+    traumaCenter: boolean;
+    burnUnit: boolean;
+    neonatalICU: boolean;
+    dialysisCenter: boolean;
+    organTransplant: boolean;
+    mentalHealthHelpline: boolean;
+  };
   pharmacy: {
-    freeMedicineScheme: true,
-    genericMedicineAvailable: true,
-    onlineBooking: true,
-    homeDelivery: true,
-    essentialMedicines: [
-      "Antibiotics",
-      "Painkillers",
-      "Cardiovascular drugs",
-      "Diabetes medication",
-    ],
-  },
+    freeMedicineScheme: boolean;
+    genericMedicineAvailable: boolean;
+    onlineBooking: boolean;
+    homeDelivery: boolean;
+    essentialMedicines: string[];
+  };
   costAndInsurance: {
-    generalConsultation: "Free",
-    averageSurgeryCost: "₹20,000 - ₹1,00,000",
-    ayushmanBharat: true,
-    esic: true,
-    cghs: true,
-    stateSchemes: ["State Health Insurance", "Chief Minister's Health Program"],
-    financialAid: "Available for BPL patients",
-  },
+    generalConsultation: string;
+    averageSurgeryCost: string;
+    ayushmanBharat: boolean;
+    esic: boolean;
+    cghs: boolean;
+    stateSchemes: string[];
+    financialAid?: string;
+  };
   facilities: {
-    waitingArea: true,
-    canteen: true,
-    parking: "Free",
-    wards: ["General", "Private", "Deluxe"],
-    attachedMedicalCollege: true,
-    researchFacilities: true,
-    telemedicine: true,
-    ambulanceServices: "24/7",
-  },
+    waitingArea: boolean;
+    canteen: boolean;
+    parking: string;
+    wards: string[];
+    attachedMedicalCollege: boolean;
+    researchFacilities: boolean;
+    telemedicine: boolean;
+    ambulanceServices: string;
+  };
   staff: {
-    doctors: 150,
-    nurses: 300,
-    supportStaff: 200,
-    sanitationRating: "4.5/5",
-  },
-  announcements: [
-    "Free Health Camp on 15th August",
-    "COVID-19 Vaccination Drive: Register Now",
-    "New Cardiology Wing Opening Next Month",
-  ],
-  nearbyHospitals: [
-    { name: "Metro City Hospital", distance: "5 km" },
-    { name: "Rural Health Center", distance: "12 km" },
-  ],
-};
+    doctors: number;
+    nurses: number;
+    supportStaff: number;
+    sanitationRating: string;
+  };
+  _id: string;
+  departments: {
+    name: string;
+    icon: string;
+    _id: string;
+  }[];
+  doctors: {
+    name: string;
+    qualification: string;
+    specialization: string;
+    position: string;
+    experience: number;
+    availability: string;
+    opdTimings: string;
+    emergencyAvailable: boolean;
+    photo: string;
+    _id: string;
+  }[];
+  announcements: string[];
+  nearbyHospitals: {
+    name: string;
+    distance: string;
+    _id: string;
+  }[];
+}
 
 export default function HospitalProfile() {
   const [activeTab, setActiveTab] = useState("overview");
+  const [hospitalData, setHospitalData] = useState<HospitalData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const params = useParams();
+  const hospitalId = params?.id as string;
+
+  useEffect(() => {
+    const fetchHospitalData = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch(`/api/get-hospital/${hospitalId}`);
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch hospital data");
+        }
+
+        const result = await response.json();
+
+        if (result.success) {
+          setHospitalData(result.data);
+        } else {
+          throw new Error(result.message || "Failed to fetch hospital data");
+        }
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "An unknown error occurred"
+        );
+        console.error("Error fetching hospital data:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (hospitalId) {
+      fetchHospitalData();
+    }
+  }, [hospitalId]);
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh]">
+        <Loader2 className="h-12 w-12 text-[#0070f3] animate-spin mb-4" />
+        <p className="text-lg">Loading hospital information...</p>
+      </div>
+    );
+  }
+
+  if (error || !hospitalData) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] p-6">
+        <AlertCircle className="h-12 w-12 text-red-500 mb-4" />
+        <h2 className="text-2xl font-bold text-red-500 mb-2">
+          Error Loading Hospital Data
+        </h2>
+        <p className="text-lg text-center mb-6">
+          {error || "Hospital information could not be loaded"}
+        </p>
+        <Button
+          onClick={() => window.location.reload()}
+          className="bg-[#0070f3]"
+        >
+          Try Again
+        </Button>
+      </div>
+    );
+  }
+
+  const renderDepartmentIcon = (iconName: string) => {
+    switch (iconName) {
+      case "stethoscope":
+        return <Stethoscope className="h-5 w-5 text-[#0070f3]" />;
+      case "child":
+        return <Users className="h-5 w-5 text-[#0070f3]" />;
+      case "bone":
+        return <Activity className="h-5 w-5 text-[#0070f3]" />;
+      case "stomach":
+        return <HeartPulse className="h-5 w-5 text-[#0070f3]" />;
+      case "ear":
+        return <Microscope className="h-5 w-5 text-[#0070f3]" />;
+      default:
+        return <Stethoscope className="h-5 w-5 text-[#0070f3]" />;
+    }
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
-      
       <div className="relative h-64 rounded-xl overflow-hidden mb-8">
         <Image
-          src={hospitalData.basicDetails.coverPhoto || "/placeholder.svg"}
+          src={hospitalData.basicDetails.coverPhoto}
           alt={`${hospitalData.basicDetails.name} cover`}
           layout="fill"
           objectFit="cover"
@@ -219,10 +260,10 @@ export default function HospitalProfile() {
       <div className="flex flex-col md:flex-row items-start md:items-end mb-8">
         <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-lg mb-4 md:mb-0 md:mr-6">
           <Image
-            src={hospitalData.basicDetails.profilePicture || "/placeholder.svg"}
+            src={hospitalData.basicDetails.profilePicture}
             alt={hospitalData.basicDetails.name}
-            layout="fill"
-            objectFit="cover"
+            fill
+            className="object-cover"
           />
         </div>
         <div>
@@ -230,7 +271,9 @@ export default function HospitalProfile() {
             {hospitalData.basicDetails.name}
           </h1>
           <div className="flex flex-wrap items-center gap-2 mb-4">
-            <Badge variant="secondary" className="bg-[#43C6B8] text-white">{hospitalData.basicDetails.type}</Badge>
+            <Badge variant="secondary" className="bg-[#43C6B8] text-white">
+              {hospitalData.basicDetails.type}
+            </Badge>
             <Badge variant="outline">ID: {hospitalData.basicDetails.id}</Badge>
             <span className="text-gray-600 flex items-center">
               <MapPin className="h-4 w-4 mr-1" />
@@ -381,8 +424,10 @@ export default function HospitalProfile() {
                   <div className="flex items-center">
                     <Globe className="h-5 w-5 mr-2 text-[#F97316]" />
                     <a
-                      href={hospitalData.basicDetails.contact.website}
+                      href={`https://${hospitalData.basicDetails.contact.website}`}
                       className="text-[#0070f3] hover:underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
                       {hospitalData.basicDetails.contact.website}
                     </a>
@@ -407,7 +452,12 @@ export default function HospitalProfile() {
                     </span>
                   </div>
                 </div>
-                <Button className="mt-4 hover:bg-accent/90 bg-[#F97316] text-white w-full">
+                <Button
+                  className="mt-4 hover:bg-accent/90 bg-[#F97316] text-white w-full"
+                  onClick={() =>
+                    window.open(hospitalData.basicDetails.mapsLink, "_blank")
+                  }
+                >
                   <MapPin className="h-4 w-4 mr-2" />
                   Get Directions
                 </Button>
@@ -434,7 +484,7 @@ export default function HospitalProfile() {
                     key={index}
                     className="flex items-center p-3 bg-secondary/5 rounded-lg"
                   >
-                    {department.icon}
+                    {renderDepartmentIcon(department.icon)}
                     <span className="ml-2">{department.name}</span>
                   </div>
                 ))}
@@ -459,10 +509,13 @@ export default function HospitalProfile() {
                       <div className="flex items-center space-x-4">
                         <div className="relative w-16 h-16 rounded-full overflow-hidden">
                           <Image
-                            src={doctor.photo || "/placeholder.svg"}
+                            src={
+                              doctor.photo ||
+                              "/placeholder.svg?height=64&width=64"
+                            }
                             alt={doctor.name}
-                            layout="fill"
-                            objectFit="cover"
+                            fill
+                            className="object-cover"
                           />
                         </div>
                         <div>
@@ -655,7 +708,10 @@ export default function HospitalProfile() {
               <CardContent>
                 <ul className="space-y-2">
                   <li className="flex items-center">
-                    <Badge variant="secondary" className="mr-2 bg-[#43C6B8] text-white">
+                    <Badge
+                      variant="secondary"
+                      className="mr-2 bg-[#43C6B8] text-white"
+                    >
                       Ayushman Bharat
                     </Badge>
                     <span>
@@ -665,7 +721,10 @@ export default function HospitalProfile() {
                     </span>
                   </li>
                   <li className="flex items-center">
-                    <Badge variant="secondary" className="mr-2 bg-[#43C6B8] text-white">
+                    <Badge
+                      variant="secondary"
+                      className="mr-2 bg-[#43C6B8] text-white"
+                    >
                       ESIC
                     </Badge>
                     <span>
@@ -675,7 +734,10 @@ export default function HospitalProfile() {
                     </span>
                   </li>
                   <li className="flex items-center">
-                    <Badge variant="secondary" className="mr-2 bg-[#43C6B8] text-white">
+                    <Badge
+                      variant="secondary"
+                      className="mr-2 bg-[#43C6B8] text-white"
+                    >
                       CGHS
                     </Badge>
                     <span>
@@ -696,10 +758,12 @@ export default function HospitalProfile() {
                   )}
                 </ul>
                 <Separator className="my-4" />
-                <div className="mt-4">
-                  <span className="font-medium">Financial Aid: </span>
-                  <span>{hospitalData.costAndInsurance.financialAid}</span>
-                </div>
+                {hospitalData.costAndInsurance.financialAid && (
+                  <div className="mt-4">
+                    <span className="font-medium">Financial Aid: </span>
+                    <span>{hospitalData.costAndInsurance.financialAid}</span>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
@@ -781,7 +845,10 @@ export default function HospitalProfile() {
       </Tabs>
 
       <div className="mt-8 text-center ">
-        <Button size="lg" className="bg-[#FA812D] hover:bg-accent/90 text-white">
+        <Button
+          size="lg"
+          className="bg-[#FA812D] hover:bg-accent/90 text-white"
+        >
           <UserPlus className="h-5 w-5 mr-2 " />
           Book an Appointment
         </Button>
@@ -789,12 +856,14 @@ export default function HospitalProfile() {
     </div>
   );
 }
+
 interface QuickInfoCardProps {
   icon: React.ReactNode;
   title: string;
   value: string | number;
 }
-function QuickInfoCard({ icon, title, value }:QuickInfoCardProps) {
+
+function QuickInfoCard({ icon, title, value }: QuickInfoCardProps) {
   return (
     <Card>
       <CardContent className="flex items-center p-4">
