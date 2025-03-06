@@ -1,75 +1,55 @@
+"use client";
+
+import Link from "next/link";
+import { MapPin, Star } from "lucide-react";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MapPin, Star, Clock } from "lucide-react";
-
+import AiimsImage from "../../public/AIIMS.jpg"
+import sufdarjungImage from "../../public/Sufdarjung.jpeg";
+import rmlImage from "../../public/rml.png";
+import lnjpImage from "../../public/lnjp.webp";
 const specialistTypes = [
   {
-    id: 1,
-    type: "Dermatologists",
-    description: "Skin specialists for various skin conditions and treatments",
-    image: "/placeholder.svg?height=200&width=300",
-    rating: 4.8,
-    hospitals: [
-      {
-        name: "Skin Care Clinic",
-        location: "Rajpur, Uttarakhand",
-        distance: "3.2 km",
-        openHours: "9:00 AM - 6:00 PM",
-      },
-    ],
+    id: "67c949509ddfb1d5d43a51b8",
+    name: "AIIMS Delhi",
+    image: AiimsImage.src,
+    location: "New Delhi, India",
+    website: "www.aiims.du",
+    type: "Government",
+    rating: "4.5",
   },
   {
-    id: 2,
-    type: "Gynecologists",
-    description:
-      "Women's health specialists for reproductive and maternal care",
-    image: "/placeholder.svg?height=200&width=300",
-    rating: 4.9,
-    hospitals: [
-      {
-        name: "Women's Health Center",
-        location: "Dehradun, Uttarakhand",
-        distance: "5.1 km",
-        openHours: "8:30 AM - 7:00 PM",
-      },
-    ],
+    id: "67c949a59ddfb1d5d43a51c3",
+    name: "Safdarjung Hospital",
+    image: sufdarjungImage.src,
+    location: "New Delhi, India",
+    website: "www.aiims.du",
+    type: "Government",
+    rating: "4.5",
   },
   {
-    id: 3,
-    type: "Diabetic Specialists",
-    description: "Endocrinologists specializing in diabetes management",
-    image: "/placeholder.svg?height=200&width=300",
-    rating: 4.7,
-    hospitals: [
-      {
-        name: "Diabetes Care Institute",
-        location: "Mussoorie Road, Uttarakhand",
-        distance: "4.5 km",
-        openHours: "9:00 AM - 5:00 PM",
-      },
-    ],
+    id: "67c949e69ddfb1d5d43a51ce",
+    name: "Dr. Ram Manohar Lohia Hospital",
+    image: rmlImage.src,
+    location: "New Delhi, India",
+    website: "www.aiims.du",
+    type: "Government",
+    rating: "4.5",
   },
   {
-    id: 4,
-    type: "Cardiologists",
-    description: "Heart specialists for cardiovascular health and treatment",
-    image: "/placeholder.svg?height=200&width=300",
-    rating: 4.9,
-    hospitals: [
-      {
-        name: "Heart Care Hospital",
-        location: "Clement Town, Uttarakhand",
-        distance: "6.3 km",
-        openHours: "24 Hours",
-      },
-    ],
+    id: "67c94a2b9ddfb1d5d43a51d9",
+    name: "Lok Nayak Jai Prakash Narayan Hospital",
+    image: lnjpImage.src,
+    location: "New Delhi, India",
+    website: "www.aiims.du",
+    type: "Government",
+    rating: "4.5",
   },
 ];
 
@@ -78,7 +58,7 @@ export default function HospitalAndClinicSection() {
     <section id="hospitals" className="py-16 bg-slate-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold  mb-4 text-[#0070f3]">
+          <h2 className="text-3xl font-bold mb-4 text-[#0070f3]">
             Hospitals & Specialist Clinics
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
@@ -89,52 +69,59 @@ export default function HospitalAndClinicSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {specialistTypes.map((specialist) => (
+          {specialistTypes.map((hospital) => (
             <Card
-              key={specialist.id}
+              key={hospital.id}
               className="overflow-hidden hover:shadow-lg transition-shadow"
             >
               <div className="relative h-48">
                 <img
-                  src={specialist.image || "/placeholder.svg"}
-                  alt={specialist.type}
+                  src={
+                    hospital.image === "kc"
+                      ? "/placeholder.svg?height=192&width=384"
+                      : hospital.image
+                  }
+                  alt={hospital.name}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute top-3 right-3 bg-white rounded-full px-2 py-1 flex items-center text-sm font-medium text-amber-500">
                   <Star className="h-4 w-4 fill-amber-500 text-amber-500 mr-1" />
-                  {specialist.rating}
+                  {hospital.rating}
                 </div>
               </div>
               <CardHeader>
-                <CardTitle>{specialist.type}</CardTitle>
-                <CardDescription>{specialist.description}</CardDescription>
+                <CardTitle>{hospital.name}</CardTitle>
+                <div className="text-sm text-gray-500 flex items-center mt-1">
+                  <span className="inline-block px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
+                    {hospital.type}
+                  </span>
+                </div>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3">
-                  {specialist.hospitals.map((hospital, idx) => (
-                    <div
-                      key={idx}
-                      className="border-b pb-3 last:border-0 last:pb-0"
+                <div className="space-y-2">
+                  <div className="flex items-center text-sm text-gray-500">
+                    <MapPin className="h-4 w-4 mr-1 flex-shrink-0" />
+                    <span>{hospital.location}</span>
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    <span className="font-medium">Website:</span>{" "}
+                    <a
+                      href={`https://${hospital.website}`}
+                      className="text-blue-600 hover:underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
-                      <h4 className="font-semibold text-[#0070f3]">
-                        {hospital.name}
-                      </h4>
-                      <div className="flex items-center text-sm text-gray-500 mt-1">
-                        <MapPin className="h-4 w-4 mr-1" />
-                        <span>{hospital.location}</span>
-                        <span className="mx-2">•</span>
-                        <span>{hospital.distance}</span>
-                      </div>
-                      <div className="flex items-center text-sm text-gray-500 mt-1">
-                        <Clock className="h-4 w-4 mr-1" />
-                        <span>{hospital.openHours}</span>
-                      </div>
-                    </div>
-                  ))}
+                      {hospital.website}
+                    </a>
+                  </div>
                 </div>
               </CardContent>
               <CardFooter>
-                <Button className="w-full bg-[#0070f3]">Book Appointment</Button>
+                <Link href={`/hospital/${hospital.id}`} className="w-full">
+                  <Button className="w-full bg-[#0070f3] hover:bg-blue-600">
+                    Book Appointment
+                  </Button>
+                </Link>
               </CardFooter>
             </Card>
           ))}
@@ -144,7 +131,9 @@ export default function HospitalAndClinicSection() {
           <Button variant="outline" className="mr-4">
             View All Specialists
           </Button>
-          <Button className="bg-[#0070f3]">Find Nearest Clinic</Button>
+          <Button className="bg-[#0070f3] hover:bg-blue-600">
+            Find Nearest Clinic
+          </Button>
         </div>
       </div>
     </section>
