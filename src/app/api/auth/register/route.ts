@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   await connectToDatabase();
 
   try {
-    const {firstName, lastName, email, password,phoneNumber } = await req.json();
+    const {firstName, lastName, email, password } = await req.json();
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -25,7 +25,6 @@ export async function POST(req: Request) {
       firstName,
       lastName,
       email,
-      phoneNumber,
       password: hashedPassword,
       otp,
       isVerified: false,
