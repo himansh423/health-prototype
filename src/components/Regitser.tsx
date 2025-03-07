@@ -56,7 +56,7 @@ export default function RegisterPage() {
       })
 
       if (response.data.success) {
-        router.push(`/verify-otp?email=${encodeURIComponent(data.email)}`)
+        router.push(`/auth/verify-otp?email=${encodeURIComponent(data.email)}`)
       }
     } catch (error: any) {
       setError(error.response?.data?.message || "Registration failed")
@@ -170,7 +170,7 @@ export default function RegisterPage() {
         <div className="text-center mt-4">
           <p className="text-sm text-gray-600">
             Already have an account?{" "}
-            <Link href="/login" className="font-medium hover:underline" style={{ color: "#0070f3" }}>
+            <Link href="/auth/login" className="font-medium hover:underline" style={{ color: "#0070f3" }}>
               Login
             </Link>
           </p>
