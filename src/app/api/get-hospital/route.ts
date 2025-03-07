@@ -1,11 +1,11 @@
 import connectToDatabase from "@/library/database/db";
 import Hospital from "@/library/modals/HospitalSchema";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function GET(req:Request) {
   try {
     await connectToDatabase();
-
+    console.log(req.json())
     const hospitals = await Hospital.find();
 
     return NextResponse.json(
