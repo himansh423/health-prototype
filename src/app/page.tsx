@@ -11,21 +11,21 @@ import RuralAccessibilitySection from "@/components/RuralAccessibilitySection";
 import SubscriptionSection from "@/components/SubscriptionSection";
 
 const page = () => {
-  return <div>
-  
+  return (
+    <div>
       <HeroSection />
+      <AIFinancingSection />
       <BundledPackagesSection />
       <HospitalAndClinicSection />
       <MedicineSection />
-      <AIFinancingSection />
       <GenerateQRSection />
       <GovernmentIntegrationSection />
       <HealthOutcomesSection />
       <RuralAccessibilitySection />
       <SubscriptionSection />
       <ReviewSection />
-    
-  </div>;
+    </div>
+  );
 };
 
 export default page;

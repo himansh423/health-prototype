@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
+import { useEffect, useState } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import {
   CalendarIcon,
   Edit,
@@ -21,58 +21,96 @@ import {
   Star,
   Phone,
   Upload,
-} from "lucide-react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import BasicInfo from "./user-profile/BasicInfo"
-import SubscriptionInfo from "./user-profile/SubscriptionInfo"
-import MedicalHistory from "./user-profile/MedicalHistory"
-import Medications from "./user-profile/Medications"
-import Vaccinations from "./user-profile/Vaccination"
-import Appointments from "./user-profile/Appointments"
-import GovernmentBenefits from "./user-profile/GovernmentBenefits"
-import EmergencyContacts from "./user-profile/EmergencyContacts"
-import Notifications from "./user-profile/Notification"
-import Feedback from "./user-profile/Feedback"
+} from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import BasicInfo from "./user-profile/BasicInfo";
+import SubscriptionInfo from "./user-profile/SubscriptionInfo";
+import MedicalHistory from "./user-profile/MedicalHistory";
+import Medications from "./user-profile/Medications";
+import Vaccinations from "./user-profile/Vaccination";
+import Appointments from "./user-profile/Appointments";
+import GovernmentBenefits from "./user-profile/GovernmentBenefits";
+import EmergencyContacts from "./user-profile/EmergencyContacts";
+import Notifications from "./user-profile/Notification";
+import Feedback from "./user-profile/Feedback";
+import axios from "axios";
 
 export default function UserProfile() {
-  const [coverPhoto, setCoverPhoto] = useState("/placeholder.svg?height=300&width=1200")
-  const [profilePhoto, setProfilePhoto] = useState("/placeholder.svg?height=150&width=150")
+  const [coverPhoto, setCoverPhoto] = useState(
+    "/placeholder.svg?height=300&width=1200"
+  );
+  const [profilePhoto, setProfilePhoto] = useState(
+    "/placeholder.svg?height=150&width=150"
+  );
+  const [user, setUser] = useState("/placeholder.svg?height=150&width=150");
 
   const handleCoverPhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      const reader = new FileReader()
+      const reader = new FileReader();
       reader.onload = (event) => {
         if (event.target?.result) {
-          setCoverPhoto(event.target.result as string)
+          setCoverPhoto(event.target.result as string);
         }
-      }
-      reader.readAsDataURL(e.target.files[0])
+      };
+      reader.readAsDataURL(e.target.files[0]);
     }
-  }
+  };
 
   const handleProfilePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      const reader = new FileReader()
+      const reader = new FileReader();
       reader.onload = (event) => {
         if (event.target?.result) {
-          setProfilePhoto(event.target.result as string)
+          setProfilePhoto(event.target.result as string);
         }
-      }
-      reader.readAsDataURL(e.target.files[0])
+      };
+      reader.readAsDataURL(e.target.files[0]);
     }
-  }
+  };
+
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const res = await axios.get(
+          "/api/get-user-data/67cab7250b3cc6436cebd7a7"
+        );
+        if (res.data.success) {
+          setUser(res.data.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getUserData();
+  }, []);
 
   return (
     <div className="flex flex-col w-full">
-      {/* Cover Photo */}
+
       <div className="relative h-[200px] md:h-[300px] w-full">
-        <img src={coverPhoto || "/placeholder.svg"} alt="Cover" className="w-full h-full object-cover" />
+        <img
+          src={coverPhoto || "/placeholder.svg"}
+          alt="Cover"
+          className="w-full h-full object-cover"
+        />
         <label
           htmlFor="cover-upload"
           className="absolute bottom-4 right-4 bg-white p-2 rounded-full cursor-pointer shadow-md hover:bg-gray-100"
         >
           <Upload className="h-5 w-5 text-[#0070f3]" />
-          <input id="cover-upload" type="file" className="hidden" onChange={handleCoverPhotoChange} accept="image/*" />
+          <input
+            id="cover-upload"
+            type="file"
+            className="hidden"
+            onChange={handleCoverPhotoChange}
+            accept="image/*"
+          />
         </label>
       </div>
 
@@ -81,7 +119,9 @@ export default function UserProfile() {
         <div className="absolute -top-16 left-8 rounded-full border-4 border-white shadow-lg">
           <Avatar className="h-32 w-32">
             <AvatarImage src={profilePhoto} alt="Profile" />
-            <AvatarFallback className="bg-[#43C6B8] text-white text-2xl">RK</AvatarFallback>
+            <AvatarFallback className="bg-[#43C6B8] text-white text-2xl">
+              RK
+            </AvatarFallback>
           </Avatar>
           <label
             htmlFor="profile-upload"
@@ -124,7 +164,10 @@ export default function UserProfile() {
             </DialogContent>
           </Dialog>
 
-          <Button variant="outline" className="border-[#43C6B8] text-[#43C6B8] hover:bg-[#43C6B8] hover:text-white">
+          <Button
+            variant="outline"
+            className="border-[#43C6B8] text-[#43C6B8] hover:bg-[#43C6B8] hover:text-white"
+          >
             <Phone className="h-4 w-4 mr-2" /> Emergency Contact
           </Button>
         </div>
@@ -134,7 +177,10 @@ export default function UserProfile() {
       <div className="p-4 md:p-8 bg-gray-50">
         <Tabs defaultValue="basic-info" className="w-full">
           <TabsList className="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-10 mb-8">
-            <TabsTrigger value="basic-info" className="data-[state=active]:bg-[#0070f3] data-[state=active]:text-white">
+            <TabsTrigger
+              value="basic-info"
+              className="data-[state=active]:bg-[#0070f3] data-[state=active]:text-white"
+            >
               <User className="h-4 w-4 mr-2" /> Basic Info
             </TabsTrigger>
             <TabsTrigger
@@ -185,7 +231,10 @@ export default function UserProfile() {
             >
               <Bell className="h-4 w-4 mr-2" /> Notifications
             </TabsTrigger>
-            <TabsTrigger value="feedback" className="data-[state=active]:bg-[#0070f3] data-[state=active]:text-white">
+            <TabsTrigger
+              value="feedback"
+              className="data-[state=active]:bg-[#0070f3] data-[state=active]:text-white"
+            >
               <Star className="h-4 w-4 mr-2" /> Feedback
             </TabsTrigger>
           </TabsList>
@@ -280,15 +329,26 @@ export default function UserProfile() {
                     <CalendarIcon className="mr-2 h-5 w-5 text-[#0070f3]" />
                     Upcoming Events
                   </h3>
-                  <Calendar mode="single" className="rounded-md border" selected={new Date()} initialFocus />
+                  <Calendar
+                    mode="single"
+                    className="rounded-md border"
+                    selected={new Date()}
+                    initialFocus
+                  />
                   <div className="mt-4 space-y-3">
                     <div className="p-3 border rounded-md bg-blue-50 border-blue-200">
                       <div className="flex items-center">
                         <div className="w-2 h-2 rounded-full bg-[#0070f3] mr-2"></div>
-                        <p className="text-sm font-medium">Doctor Appointment</p>
+                        <p className="text-sm font-medium">
+                          Doctor Appointment
+                        </p>
                       </div>
-                      <p className="text-xs text-gray-500 mt-1">May 15, 2025 - 10:30 AM</p>
-                      <p className="text-xs text-gray-700 mt-1">Dr. Sharma (Cardiologist)</p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        May 15, 2025 - 10:30 AM
+                      </p>
+                      <p className="text-xs text-gray-700 mt-1">
+                        Dr. Sharma (Cardiologist)
+                      </p>
                     </div>
                     <div className="p-3 border rounded-md bg-orange-50 border-orange-200">
                       <div className="flex items-center">
@@ -296,15 +356,21 @@ export default function UserProfile() {
                         <p className="text-sm font-medium">Medicine Refill</p>
                       </div>
                       <p className="text-xs text-gray-500 mt-1">May 10, 2025</p>
-                      <p className="text-xs text-gray-700 mt-1">Diabetes Medication</p>
+                      <p className="text-xs text-gray-700 mt-1">
+                        Diabetes Medication
+                      </p>
                     </div>
                     <div className="p-3 border rounded-md bg-teal-50 border-teal-200">
                       <div className="flex items-center">
                         <div className="w-2 h-2 rounded-full bg-[#43C6B8] mr-2"></div>
                         <p className="text-sm font-medium">Blood Test</p>
                       </div>
-                      <p className="text-xs text-gray-500 mt-1">May 20, 2025 - 9:00 AM</p>
-                      <p className="text-xs text-gray-700 mt-1">Fasting Blood Sugar</p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        May 20, 2025 - 9:00 AM
+                      </p>
+                      <p className="text-xs text-gray-700 mt-1">
+                        Fasting Blood Sugar
+                      </p>
                     </div>
                   </div>
                 </CardContent>
@@ -319,17 +385,27 @@ export default function UserProfile() {
                   <div className="space-y-3">
                     <div className="p-3 border rounded-md">
                       <p className="text-sm font-medium">Medicine Reminder</p>
-                      <p className="text-xs text-gray-500 mt-1">Take Metformin 500mg after breakfast</p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Take Metformin 500mg after breakfast
+                      </p>
                       <p className="text-xs text-gray-400 mt-1">2 hours ago</p>
                     </div>
                     <div className="p-3 border rounded-md">
-                      <p className="text-sm font-medium">Appointment Confirmed</p>
-                      <p className="text-xs text-gray-500 mt-1">Your appointment with Dr. Sharma is confirmed</p>
+                      <p className="text-sm font-medium">
+                        Appointment Confirmed
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Your appointment with Dr. Sharma is confirmed
+                      </p>
                       <p className="text-xs text-gray-400 mt-1">Yesterday</p>
                     </div>
                     <div className="p-3 border rounded-md">
-                      <p className="text-sm font-medium">Government Health Camp</p>
-                      <p className="text-xs text-gray-500 mt-1">Free health checkup camp in your village on May 25</p>
+                      <p className="text-sm font-medium">
+                        Government Health Camp
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Free health checkup camp in your village on May 25
+                      </p>
                       <p className="text-xs text-gray-400 mt-1">2 days ago</p>
                     </div>
                   </div>
@@ -340,6 +416,5 @@ export default function UserProfile() {
         </Tabs>
       </div>
     </div>
-  )
+  );
 }
-

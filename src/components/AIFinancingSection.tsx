@@ -1,19 +1,33 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Slider } from "@/components/ui/slider"
 import { Progress } from "@/components/ui/progress"
-import { BrainCircuit, Landmark, Calculator, BadgePercent, Calendar } from "lucide-react"
+import { BrainCircuit, Landmark, Calculator, BadgePercent, Calendar, Loader2 } from "lucide-react"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+
+type RecommendationType = "subscription" | "tiered" | "microinsurance"
+
+interface Recommendation {
+  recommendedOption: RecommendationType
+  confidenceScore: number
+  reasoning: string
+  customizedAdvice: string
+}
 
 export default function AIFinancingSection() {
   const [incomeRange, setIncomeRange] = useState([15000])
   const [familySize, setFamilySize] = useState([4])
   const [healthCondition, setHealthCondition] = useState("chronic")
+  const [recommendation, setRecommendation] = useState<Recommendation | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const getRecommendedOption = () => {
+  // Fallback recommendation in case API fails
+  const getFallbackRecommendation = (): RecommendationType => {
     const income = incomeRange[0]
     const members = familySize[0]
 
@@ -26,7 +40,52 @@ export default function AIFinancingSection() {
     }
   }
 
-  const recommendedOption = getRecommendedOption()
+  const getRecommendation = async () => {
+    setLoading(true)
+    setError(null)
+
+    try {
+      const response = await fetch("/api/gemini", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          income: incomeRange[0],
+          familySize: familySize[0],
+          healthCondition,
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to get recommendation")
+      }
+
+      const data = await response.json()
+      setRecommendation(data)
+    } catch (err) {
+      console.error("Error fetching recommendation:", err)
+      setError("Unable to get AI recommendation. Using fallback logic instead.")
+      // Set a fallback recommendation
+      setRecommendation({
+        recommendedOption: getFallbackRecommendation(),
+        confidenceScore: 75,
+        reasoning: "Based on your profile, this option seems most suitable.",
+        customizedAdvice: "Consider exploring all options to find the best fit for your needs.",
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // Get recommendation when parameters change (with debounce)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      getRecommendation()
+    }, 500)
+
+    return () => clearTimeout(timer)
+  }, [incomeRange[0], familySize[0], healthCondition])
 
   return (
     <section id="financing" className="py-16 bg-slate-50">
@@ -55,7 +114,14 @@ export default function AIFinancingSection() {
                     <label className="text-sm font-medium">Monthly Household Income</label>
                     <span className="text-sm font-medium">₹{incomeRange[0].toLocaleString()}</span>
                   </div>
-                  <Slider className="bg-[#0070f3]" value={incomeRange} min={5000} max={50000} step={1000} onValueChange={setIncomeRange} />
+                  <Slider
+                    className="bg-[#0070f3]"
+                    value={incomeRange}
+                    min={5000}
+                    max={50000}
+                    step={1000}
+                    onValueChange={setIncomeRange}
+                  />
                   <div className="flex justify-between text-xs text-gray-500">
                     <span>₹5,000</span>
                     <span>₹50,000</span>
@@ -79,42 +145,59 @@ export default function AIFinancingSection() {
                   <div className="grid grid-cols-3 gap-2">
                     <Button
                       variant={healthCondition === "healthy" ? "default" : "outline"}
-                      className={`h-auto py-2 ${healthCondition === "healthy"?'bg-[#0070f3] text-white':'bg-white text-black'}`}
+                      className={`h-auto py-2 ${healthCondition === "healthy" ? "bg-[#0070f3] text-white" : "bg-white text-black"}`}
                       onClick={() => setHealthCondition("healthy")}
                     >
                       Healthy
                     </Button>
                     <Button
                       variant={healthCondition === "minor" ? "default" : "outline"}
-                      className={`h-auto py-2 ${healthCondition === "minor"?'bg-[#0070f3] text-white':'bg-white text-black'}`}
+                      className={`h-auto py-2 ${healthCondition === "minor" ? "bg-[#0070f3] text-white" : "bg-white text-black"}`}
                       onClick={() => setHealthCondition("minor")}
                     >
                       Minor
                     </Button>
                     <Button
                       variant={healthCondition === "chronic" ? "default" : "outline"}
-                      className={`h-auto py-2 ${healthCondition === "chronic"?'bg-[#0070f3] text-white':'bg-white text-black'}`}
+                      className={`h-auto py-2 ${healthCondition === "chronic" ? "bg-[#0070f3] text-white" : "bg-white text-black"}`}
                       onClick={() => setHealthCondition("chronic")}
                     >
                       Chronic
                     </Button>
                   </div>
                 </div>
+
+                {loading && (
+                  <div className="flex items-center justify-center py-2">
+                    <Loader2 className="h-5 w-5 text-[#0070f3] animate-spin mr-2" />
+                    <span className="text-sm">Analyzing your profile...</span>
+                  </div>
+                )}
+
+                {error && (
+                  <Alert variant="destructive" className="bg-red-50 border-red-200 text-red-800">
+                    <AlertDescription>{error}</AlertDescription>
+                  </Alert>
+                )}
               </CardContent>
               <CardFooter>
                 <div className="w-full">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-sm font-medium">AI Confidence Score</span>
-                    <span className="text-sm font-medium">92%</span>
+                    <span className="text-sm font-medium">{recommendation?.confidenceScore || 92}%</span>
                   </div>
-                  <Progress value={92} className="h-2" />
+                  <Progress value={recommendation?.confidenceScore || 92} className="h-2" />
                 </div>
               </CardFooter>
             </Card>
           </div>
 
           <div className="lg:col-span-2">
-            <Tabs defaultValue={recommendedOption} className="w-full">
+            <Tabs
+              defaultValue={recommendation?.recommendedOption || "subscription"}
+              value={recommendation?.recommendedOption || "subscription"}
+              className="w-full"
+            >
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger
                   value="subscription"
@@ -134,25 +217,27 @@ export default function AIFinancingSection() {
               </TabsList>
 
               <div className="mt-6 bg-white rounded-lg border p-1">
-                {recommendedOption === "subscription" && (
+                {recommendation && (
                   <div className="bg-green-50 text-green-800 px-4 py-2 rounded flex items-center text-sm">
                     <BadgePercent className="h-4 w-4 mr-2" />
-                    AI Recommendation: Subscription model is ideal for your profile
-                  </div>
-                )}
-                {recommendedOption === "tiered" && (
-                  <div className="bg-green-50 text-green-800 px-4 py-2 rounded flex items-center text-sm">
-                    <BadgePercent className="h-4 w-4 mr-2" />
-                    AI Recommendation: Tiered pricing is ideal for your profile
-                  </div>
-                )}
-                {recommendedOption === "microinsurance" && (
-                  <div className="bg-green-50 text-green-800 px-4 py-2 rounded flex items-center text-sm">
-                    <BadgePercent className="h-4 w-4 mr-2" />
-                    AI Recommendation: Microinsurance is ideal for your profile
+                    AI Recommendation:{" "}
+                    {recommendation.recommendedOption === "subscription"
+                      ? "Subscription model"
+                      : recommendation.recommendedOption === "tiered"
+                        ? "Tiered pricing"
+                        : "Microinsurance"}{" "}
+                    is ideal for your profile
                   </div>
                 )}
               </div>
+
+              {recommendation && (
+                <div className="mt-3 bg-blue-50 p-4 rounded-lg">
+                  <h4 className="font-medium text-[#0070f3] mb-2">AI Analysis</h4>
+                  <p className="text-sm text-gray-700">{recommendation.reasoning}</p>
+                  <p className="text-sm text-gray-700 mt-2 font-medium">{recommendation.customizedAdvice}</p>
+                </div>
+              )}
 
               <TabsContent value="subscription" className="mt-4">
                 <Card>
