@@ -69,6 +69,7 @@ export default function Navbar() {
             </Button>
 
             {isAuthenticated ? (
+              <>
               <Button
                 variant="outline"
                 className="flex items-center gap-2 text-[#ff0000]"
@@ -77,6 +78,16 @@ export default function Navbar() {
                 <LogOut className="h-4 w-4" />
                 Logout
               </Button>
+              <Link href={"/profile/67cab7250b3cc6436cebd7a7"}>
+              <Button
+                variant="outline"
+                className="flex items-center gap-2 text-[#0048ff]"
+              >
+                <User className="h-4 w-4" />
+                Profile
+              </Button>
+              </Link>
+              </>
             ) : (
               <>
                 <Link href={"/auth/login"}>

@@ -40,7 +40,7 @@ import EmergencyContacts from "./user-profile/EmergencyContacts";
 import Notifications from "./user-profile/Notification";
 import Feedback from "./user-profile/Feedback";
 import axios from "axios";
-
+import userImg from "../../public/user.jpg";
 export default function UserProfile() {
   const [coverPhoto, setCoverPhoto] = useState(
     "/placeholder.svg?height=300&width=1200"
@@ -92,10 +92,9 @@ export default function UserProfile() {
 
   return (
     <div className="flex flex-col w-full">
-
       <div className="relative h-[200px] md:h-[300px] w-full">
         <img
-          src={coverPhoto || "/placeholder.svg"}
+          src={userImg.src}
           alt="Cover"
           className="w-full h-full object-cover"
         />
@@ -118,7 +117,7 @@ export default function UserProfile() {
       <div className="bg-white px-4 md:px-8 py-6 flex flex-col md:flex-row items-start md:items-end gap-4 relative">
         <div className="absolute -top-16 left-8 rounded-full border-4 border-white shadow-lg">
           <Avatar className="h-32 w-32">
-            <AvatarImage src={profilePhoto} alt="Profile" />
+            <AvatarImage src={userImg.src} alt="Profile" />
             <AvatarFallback className="bg-[#43C6B8] text-white text-2xl">
               RK
             </AvatarFallback>

@@ -1,14 +1,25 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Input } from "@/components/ui/input"
-import { Search, Upload, ShoppingCart, Pill } from "lucide-react"
-
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Search, Upload, ShoppingCart, Pill } from "lucide-react";
+import Metformin from "../../public/Metformin-500mg.jpg";
+import Amlodipine from "../../public/Amlodipine-5mg.jpg";
+import Atorvastatin from "../../public/Atorvastatin-10mg.jpeg";
+import Levothyroxine from "../../public/Levothyroxine-50mcg.jpg";
+import Omeprazole from "../../public/Omeprazole-20mg.webp";
+import Azithromycin from "../../public/Azithromycin-500mg.webp"
 const medicines = [
   {
     id: 1,
@@ -16,7 +27,7 @@ const medicines = [
     category: "Diabetes",
     generic: true,
     price: 120,
-    image: "/placeholder.svg?height=150&width=150",
+    image: Metformin.src,
     description: "Oral medication used to treat type 2 diabetes",
   },
   {
@@ -25,7 +36,7 @@ const medicines = [
     category: "Blood Pressure",
     generic: true,
     price: 85,
-    image: "/placeholder.svg?height=150&width=150",
+    image: Amlodipine.src,
     description: "Calcium channel blocker used to treat high blood pressure",
   },
   {
@@ -34,7 +45,7 @@ const medicines = [
     category: "Cholesterol",
     generic: true,
     price: 110,
-    image: "/placeholder.svg?height=150&width=150",
+    image: Atorvastatin.src,
     description: "Statin medication used to lower cholesterol levels",
   },
   {
@@ -43,7 +54,7 @@ const medicines = [
     category: "Thyroid",
     generic: true,
     price: 95,
-    image: "/placeholder.svg?height=150&width=150",
+    image: Levothyroxine.src,
     description: "Synthetic thyroid hormone for hypothyroidism",
   },
   {
@@ -52,7 +63,7 @@ const medicines = [
     category: "Gastric",
     generic: true,
     price: 75,
-    image: "/placeholder.svg?height=150&width=150",
+    image: Omeprazole.src,
     description: "Proton pump inhibitor for acid reflux and ulcers",
   },
   {
@@ -61,35 +72,37 @@ const medicines = [
     category: "Antibiotic",
     generic: true,
     price: 130,
-    image: "/placeholder.svg?height=150&width=150",
+    image: Azithromycin.src,
     description: "Antibiotic used to treat bacterial infections",
   },
-]
+];
 
 export default function MedicineSection() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const filteredMedicines = medicines.filter(
     (medicine) =>
       medicine.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      medicine.category.toLowerCase().includes(searchTerm.toLowerCase()),
-  )
+      medicine.category.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setSelectedFile(e.target.files[0])
+      setSelectedFile(e.target.files[0]);
     }
-  }
+  };
 
   return (
     <section id="medicines" className="py-16">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-[#0070f3] mb-4">Affordable Generic Medicines</h2>
+          <h2 className="text-3xl font-bold text-[#0070f3] mb-4">
+            Affordable Generic Medicines
+          </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Access quality generic medications at affordable prices. Upload your prescription or search for specific
-            medicines.
+            Access quality generic medications at affordable prices. Upload your
+            prescription or search for specific medicines.
           </p>
         </div>
 
@@ -113,7 +126,10 @@ export default function MedicineSection() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredMedicines.map((medicine) => (
-                <Card key={medicine.id} className="overflow-hidden hover:shadow-md transition-shadow">
+                <Card
+                  key={medicine.id}
+                  className="overflow-hidden hover:shadow-md transition-shadow"
+                >
                   <CardHeader className="pb-2">
                     <div className="flex items-start">
                       <div className="w-20 h-20 mr-4 flex-shrink-0">
@@ -124,9 +140,13 @@ export default function MedicineSection() {
                         />
                       </div>
                       <div>
-                        <CardTitle className="text-lg">{medicine.name}</CardTitle>
+                        <CardTitle className="text-lg">
+                          {medicine.name}
+                        </CardTitle>
                         <div className="flex items-center mt-1">
-                          <span className="text-sm text-gray-500">{medicine.category}</span>
+                          <span className="text-sm text-gray-500">
+                            {medicine.category}
+                          </span>
                           {medicine.generic && (
                             <span className="ml-2 px-2 py-0.5 bg-green-100 text-green-800 text-xs rounded-full">
                               Generic
@@ -137,8 +157,12 @@ export default function MedicineSection() {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-gray-600">{medicine.description}</p>
-                    <p className="text-lg font-bold text-[#0070f3] mt-2">₹{medicine.price}</p>
+                    <p className="text-sm text-gray-600">
+                      {medicine.description}
+                    </p>
+                    <p className="text-lg font-bold text-[#0070f3] mt-2">
+                      ₹{medicine.price}
+                    </p>
                   </CardContent>
                   <CardFooter>
                     <Button className="w-full flex items-center gap-2 bg-[#0070f3]">
@@ -153,7 +177,9 @@ export default function MedicineSection() {
             {filteredMedicines.length === 0 && (
               <div className="text-center py-8">
                 <Pill className="h-12 w-12 mx-auto text-gray-400" />
-                <p className="mt-4 text-gray-600">No medicines found matching your search.</p>
+                <p className="mt-4 text-gray-600">
+                  No medicines found matching your search.
+                </p>
               </div>
             )}
 
@@ -165,28 +191,36 @@ export default function MedicineSection() {
           <TabsContent value="prescription">
             <div className="bg-slate-50 border-2 border-dashed border-slate-200 rounded-lg p-8 text-center">
               <Upload className="h-12 w-12 mx-auto text-primary mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Upload Your Prescription</h3>
+              <h3 className="text-xl font-semibold mb-2">
+                Upload Your Prescription
+              </h3>
               <p className="text-gray-600 mb-6">
-                Upload a clear image of your prescription. We&apos;ll process it and deliver your medicines to your doorstep.
+                Upload a clear image of your prescription. We&apos;ll process it
+                and deliver your medicines to your doorstep.
               </p>
 
               <div className="max-w-sm mx-auto">
                 <label className="block">
                   <span className="sr-only">Choose file</span>
-                  <input type="file" className="hidden" accept="image/*" onChange={handleFileChange} />
-                  <Button
-                    variant="outline"
-                    className="w-full mb-4"
-                    
-                  >
+                  <input
+                    type="file"
+                    className="hidden"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                  />
+                  <Button variant="outline" className="w-full mb-4">
                     Select Prescription
                   </Button>
                 </label>
 
                 {selectedFile && (
                   <div className="text-left p-3 bg-white rounded border mb-4">
-                    <p className="text-sm font-medium truncate">{selectedFile.name}</p>
-                    <p className="text-xs text-gray-500">{(selectedFile.size / 1024).toFixed(2)} KB</p>
+                    <p className="text-sm font-medium truncate">
+                      {selectedFile.name}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {(selectedFile.size / 1024).toFixed(2)} KB
+                    </p>
                   </div>
                 )}
 
@@ -199,6 +233,5 @@ export default function MedicineSection() {
         </Tabs>
       </div>
     </section>
-  )
+  );
 }
-
