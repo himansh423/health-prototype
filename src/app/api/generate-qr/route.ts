@@ -3,7 +3,7 @@ import QRCode from "qrcode"
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId, type } = await req.json()
+    const { userId } = await req.json()
 
     if (!userId) {
       return NextResponse.json({ success: false, message: "User ID is required" }, { status: 400 })
