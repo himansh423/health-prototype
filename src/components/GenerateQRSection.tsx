@@ -1,13 +1,102 @@
 "use client"
 
 import { useState } from "react"
+import axios from "axios"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { QrCode, FileText, History, User, Download, Share2 } from "lucide-react"
+import { QrCode, FileText, History, User, Download, Share2, Loader2 } from "lucide-react"
+import { Toast } from "./Toast"
+
 
 export default function GenerateQRSection() {
   const [qrGenerated, setQrGenerated] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [qrData, setQrData] = useState({
+    profile: "",
+    reports: "",
+    history: "",
+  })
+  const [pdfUrl, setPdfUrl] = useState("")
+  const [toastMessage, setToastMessage] = useState<{
+    show: boolean
+    title: string
+    description?: string
+    variant?: "default" | "destructive"
+  }>({
+    show: false,
+    title: "",
+  })
+
+  const showToast = (title: string, description?: string, variant?: "default" | "destructive") => {
+    setToastMessage({
+      show: true,
+      title,
+      description,
+      variant,
+    })
+
+    // Auto hide toast after 3 seconds
+    setTimeout(() => {
+      setToastMessage((prev) => ({ ...prev, show: false }))
+    }, 3000)
+  }
+
+  const generateQR = async () => {
+    setIsLoading(true)
+    try {
+      // Replace with your actual user ID
+      const userId = "67cab7250b3cc6436cebd7a7"
+
+      const response = await axios.post("/api/generate-qr", { userId })
+      const data = response.data
+
+      if (data.success) {
+        // Set the same QR code for all tabs for simplicity
+        // In a real app, you might want to generate different QRs for different sections
+        setQrData({
+          profile: data.qrCode,
+          reports: data.qrCode,
+          history: data.qrCode,
+        })
+        setPdfUrl(data.pdfUrl)
+        setQrGenerated(true)
+        showToast("Success", "Your health QR code has been generated successfully")
+      } else {
+        throw new Error(data.message || "Failed to generate QR code")
+      }
+    } catch (error) {
+      console.error("Error generating QR code:", error)
+      showToast("Error", "Failed to generate QR code. Please try again.", "destructive")
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleDownload = () => {
+    // Create a temporary link and trigger download
+    window.open(pdfUrl, "_blank")
+  }
+
+  const handleShare = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: "My Health Profile",
+          text: "Check out my health profile",
+          url: pdfUrl,
+        })
+        showToast("Shared", "Your health profile has been shared successfully")
+      } else {
+        // Fallback for browsers that don't support the Web Share API
+        navigator.clipboard.writeText(pdfUrl)
+        showToast("Link Copied", "PDF link copied to clipboard")
+      }
+    } catch (error) {
+      console.error("Error sharing:", error)
+      showToast("Error", "Failed to share. Link copied to clipboard instead.", "destructive")
+    }
+  }
 
   return (
     <section id="qr" className="py-16 bg-gradient-to-b from-blue-50 to-white">
@@ -64,8 +153,15 @@ export default function GenerateQRSection() {
                 </div>
               </div>
 
-              <Button className="mt-8 w-full bg-[#0070f3] sm:w-auto" onClick={() => setQrGenerated(true)}>
-                Generate My Health QR
+              <Button className="mt-8 w-full bg-[#0070f3] sm:w-auto" onClick={generateQR} disabled={isLoading}>
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  "Generate My Health QR"
+                )}
               </Button>
             </div>
 
@@ -86,21 +182,31 @@ export default function GenerateQRSection() {
                             <div>
                               <div className="bg-white p-4 rounded-lg inline-block mb-4">
                                 <img
-                                  src="/placeholder.svg?height=200&width=200"
+                                  src={qrData.profile || "/placeholder.svg?height=200&width=200"}
                                   alt="Profile QR Code"
                                   className="w-48 h-48 mx-auto"
                                 />
                               </div>
                               <h4 className="font-medium mb-2">Your Health Profile QR</h4>
                               <p className="text-sm text-gray-600 mb-4">
-                                Scan this QR code to access your complete health profile
+                                Scan this QR code to download your complete health profile
                               </p>
                               <div className="flex justify-center space-x-3">
-                                <Button size="sm" variant="outline" className="flex items-center gap-1">
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="flex items-center gap-1"
+                                  onClick={handleDownload}
+                                >
                                   <Download className="h-4 w-4" />
                                   Download
                                 </Button>
-                                <Button size="sm" variant="outline" className="flex items-center gap-1">
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="flex items-center gap-1"
+                                  onClick={handleShare}
+                                >
                                   <Share2 className="h-4 w-4" />
                                   Share
                                 </Button>
@@ -121,21 +227,31 @@ export default function GenerateQRSection() {
                             <div>
                               <div className="bg-white p-4 rounded-lg inline-block mb-4">
                                 <img
-                                  src="/placeholder.svg?height=200&width=200"
+                                  src={qrData.reports || "/placeholder.svg?height=200&width=200"}
                                   alt="Reports QR Code"
                                   className="w-48 h-48 mx-auto"
                                 />
                               </div>
                               <h4 className="font-medium mb-2">Your Medical Reports QR</h4>
                               <p className="text-sm text-gray-600 mb-4">
-                                Scan this QR code to access all your medical reports
+                                Scan this QR code to download all your medical reports
                               </p>
                               <div className="flex justify-center space-x-3">
-                                <Button size="sm" variant="outline" className="flex items-center gap-1">
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="flex items-center gap-1"
+                                  onClick={handleDownload}
+                                >
                                   <Download className="h-4 w-4" />
                                   Download
                                 </Button>
-                                <Button size="sm" variant="outline" className="flex items-center gap-1">
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="flex items-center gap-1"
+                                  onClick={handleShare}
+                                >
                                   <Share2 className="h-4 w-4" />
                                   Share
                                 </Button>
@@ -156,21 +272,31 @@ export default function GenerateQRSection() {
                             <div>
                               <div className="bg-white p-4 rounded-lg inline-block mb-4">
                                 <img
-                                  src="/placeholder.svg?height=200&width=200"
+                                  src={qrData.history || "/placeholder.svg?height=200&width=200"}
                                   alt="History QR Code"
                                   className="w-48 h-48 mx-auto"
                                 />
                               </div>
                               <h4 className="font-medium mb-2">Your Treatment History QR</h4>
                               <p className="text-sm text-gray-600 mb-4">
-                                Scan this QR code to access your treatment history
+                                Scan this QR code to download your treatment history
                               </p>
                               <div className="flex justify-center space-x-3">
-                                <Button size="sm" variant="outline" className="flex items-center gap-1">
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="flex items-center gap-1"
+                                  onClick={handleDownload}
+                                >
                                   <Download className="h-4 w-4" />
                                   Download
                                 </Button>
-                                <Button size="sm" variant="outline" className="flex items-center gap-1">
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="flex items-center gap-1"
+                                  onClick={handleShare}
+                                >
                                   <Share2 className="h-4 w-4" />
                                   Share
                                 </Button>
@@ -192,6 +318,11 @@ export default function GenerateQRSection() {
           </div>
         </div>
       </div>
+
+      {/* Custom Toast Component */}
+      {toastMessage.show && (
+        <Toast title={toastMessage.title} description={toastMessage.description} variant={toastMessage.variant} />
+      )}
     </section>
   )
 }
