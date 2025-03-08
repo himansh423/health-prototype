@@ -43,7 +43,12 @@ import {
   Check,
   Award,
   Loader2,
+  X,
 } from "lucide-react";
+import { Textarea } from "./ui/textarea";
+import { Label } from "@radix-ui/react-label";
+import { Input } from "./ui/input";
+import { useForm } from "react-hook-form";
 
 interface HospitalData {
   basicDetails: {
@@ -163,7 +168,85 @@ export default function HospitalProfile() {
   const [hospitalData, setHospitalData] = useState<HospitalData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibilit
+  const BookAppointmentModal = () => {
+    const {
+      register,
+      handleSubmit,
+      formState: { errors },
+    } = useForm();
 
+    const onSubmit = (data: any) => {
+      console.log("Appointment Data:", data);
+      setIsModalOpen(false); // Close modal after submission
+    };
+
+    return (
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div className="bg-white rounded-lg w-full max-w-md p-6">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-bold text-[#0070f3]">
+              Book Appointment
+            </h2>
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="text-gray-500 hover:text-gray-700"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div>
+              <Label htmlFor="purpose">Purpose of Visit</Label>
+              <Input
+                id="purpose"
+                {...register("purpose", { required: "Purpose is required" })}
+                placeholder="e.g., General Checkup"
+              />
+              {/* {errors.purpose && (
+                <p className="text-sm text-red-500">
+                  {errors.purpose.message}
+                </p>
+              )} */}
+            </div>
+            <div>
+              <Label htmlFor="date">Appointment Date</Label>
+              <Input
+                id="date"
+                type="date"
+                {...register("date", { required: "Date is required" })}
+              />
+              {/* {errors.date && (
+                <p className="text-sm text-red-500">{errors.date.message}</p>
+              )} */}
+            </div>
+            <div>
+              <Label htmlFor="time">Appointment Time</Label>
+              <Input
+                id="time"
+                type="time"
+                {...register("time", { required: "Time is required" })}
+              />
+              {/* {errors.time && (
+                <p className="text-sm text-red-500">{errors.time.message}</p>
+              )} */}
+            </div>
+            <div>
+              <Label htmlFor="notes">Additional Notes</Label>
+              <Textarea
+                id="notes"
+                {...register("notes")}
+                placeholder="Any additional information"
+              />
+            </div>
+            <Button type="submit" className="w-full bg-[#0070f3]">
+              Confirm Appointment
+            </Button>
+          </form>
+        </div>
+      </div>
+    );
+  };
   const params = useParams();
   const hospitalId = params?.id as string;
 
@@ -247,6 +330,7 @@ export default function HospitalProfile() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {isModalOpen && <BookAppointmentModal />}
       <div className="relative h-64 rounded-xl overflow-hidden mb-8">
         <Image
           src={hospitalData.basicDetails.coverPhoto}
@@ -844,12 +928,13 @@ export default function HospitalProfile() {
         </TabsContent>
       </Tabs>
 
-      <div className="mt-8 text-center ">
+      <div className="mt-8 text-center">
         <Button
           size="lg"
           className="bg-[#FA812D] hover:bg-[#FA812D]/90 text-white"
+          onClick={() => setIsModalOpen(true)}
         >
-          <UserPlus className="h-5 w-5 mr-2 " />
+          <UserPlus className="h-5 w-5 mr-2" />
           Book an Appointment
         </Button>
       </div>
