@@ -847,7 +847,7 @@ export default function HospitalProfile() {
       <div className="mt-8 text-center ">
         <Button
           size="lg"
-          className="bg-[#FA812D] hover:bg-accent/90 text-white"
+          className="bg-[#FA812D] hover:bg-[#FA812D]/90 text-white"
         >
           <UserPlus className="h-5 w-5 mr-2 " />
           Book an Appointment
