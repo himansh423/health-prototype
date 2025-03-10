@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
-import { NextResponse } from "next/server";
 
 const genAI = new GoogleGenerativeAI(
   process.env.NEXT_PUBLIC_GEMINI_API_KEY || ""
@@ -24,9 +24,20 @@ async function fetchUserData(userId: string) {
   }
 }
 
-// Function to generate health recommendations
-async function generateHealthRecommendations(userData: any) {
-  const prompt = `
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const responseStream = new TransformStream();
+  const writer = responseStream.writable.getWriter();
+  const encoder = new TextEncoder();
+
+  try {
+    const { id } = params;
+    const userData = await fetchUserData(id);
+
+    // Create the prompt
+    const prompt = `
 You are a health advisor analyzing a user's health profile. Based on the following user data, provide a detailed health recommendation in a structured and easy-to-read format. Break down the recommendations into sections and use bullet points for clarity. Ensure the recommendations are actionable and prioritize the user's health needs.
 
 **User Data:**
@@ -53,38 +64,58 @@ You are a health advisor analyzing a user's health profile. Based on the followi
 - **Vaccination Records:** ${userData.vaccinationRecords.map((record: any) => `${record.vaccineName} (Date: ${record.date}, Location: ${record.location})`).join(", ")}
 
 **Instructions:**
-1. **Health Summary:** Provide a brief summary of the user's current health status based on their chronic conditions, medications, and recent health reports.
-2. **Focus Areas:** Highlight 2-3 key areas the user should focus on to improve their health (e.g., diet, exercise, medication adherence).
-3. **Doctor Consultation:** Recommend whether the user should consult a doctor again and specify the reason (e.g., follow-up for chronic conditions, new symptoms, or upcoming vaccinations).
-4. **Preventive Measures:** Suggest preventive measures such as vaccinations, lifestyle changes, or regular health checkups.
-5. **Medication Management:** Provide advice on managing current medications, including reminders for refills or potential side effects.
-6. **Insurance & Benefits:** Advise on how the user can maximize their insurance coverage and subscription benefits.
-7. **Family Health:** Provide recommendations for the user's family members based on their age and health coverage.
-8. **Government Schemes:** Suggest how the user can utilize government health schemes like Ayushman Bharat.
+1. Health Summary: Provide a brief summary of the user's current health status based on their chronic conditions, medications, and recent health reports.
+2. Focus Areas: Highlight 2-3 key areas the user should focus on to improve their health (e.g., diet, exercise, medication adherence).
+3. Doctor Consultation: Recommend whether the user should consult a doctor again and specify the reason (e.g., follow-up for chronic conditions, new symptoms, or upcoming vaccinations).
+4. Preventive Measures: Suggest preventive measures such as vaccinations, lifestyle changes, or regular health checkups.
+5. Medication Management: Provide advice on managing current medications, including reminders for refills or potential side effects.
+6. Insurance & Benefits: Advise on how the user can maximize their insurance coverage and subscription benefits.
+7. Family Health: Provide recommendations for the user's family members based on their age and health coverage.
+8. Government Schemes: Suggest how the user can utilize government health schemes like Ayushman Bharat.
 
 **Output Format:**
-- Use clear headings for each section.
+- Use clear headings for each section without any markdown symbols like asterisks.
 - Use bullet points for recommendations.
 - Keep the language simple and actionable.
 - Avoid medical jargon unless necessary.
+- DO NOT use markdown formatting like ** for bold text. Instead, just write the headings in plain text.
 `;
 
-  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-  const result = await model.generateContent(prompt);
-  const response = await result.response;
-  return response.text();
-}
-
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
-  try {
-    const { id } = params;
-    const userData = await fetchUserData(id);
-    const recommendations = await generateHealthRecommendations(userData);
-
-    return NextResponse.json({ recommendations });
+    
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    
+    const streamingResponse = await model.generateContentStream(prompt);
+    
+  
+    (async () => {
+      try {
+        
+        for await (const chunk of streamingResponse.stream) {
+          const text = chunk.text();
+          if (text) {
+            // Write the chunk to the response stream
+            await writer.write(encoder.encode(text));
+          }
+        }
+        // Close the writer when done
+        await writer.close();
+      } catch (error) {
+        console.error("Error processing stream:", error);
+        // In case of error, write an error message and close
+        const errorMessage = "Error generating recommendations. Please try again.";
+        await writer.write(encoder.encode(errorMessage));
+        await writer.close();
+      }
+    })();
+    
+    // Return the streaming response
+    return new Response(responseStream.readable, {
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Transfer-Encoding": "chunked",
+      },
+    });
+    
   } catch (error) {
     console.error("Error generating recommendation:", error);
     return NextResponse.json(

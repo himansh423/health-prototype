@@ -15,7 +15,6 @@ const page = () => {
   return (
     <div>
       <HeroSection />
-      <PersonlizedRecommendations/>
       <AIFinancingSection />
       <BundledPackagesSection />
       <HospitalAndClinicSection />

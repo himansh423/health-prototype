@@ -31,7 +31,6 @@ export default function Navbar() {
     if (res.data.success) {
       window.location.reload();
     }
-    
   };
 
   return (
@@ -45,21 +44,23 @@ export default function Navbar() {
               </span>
             </Link>
             <div className="hidden md:ml-10 md:flex md:space-x-8">
-              {[
-                "Home",
-                "Hospitals",
-                "Medicines",
-                "Subscriptions",
-                "About Us",
-              ].map((item, index) => (
-                <Link
-                  key={index}
-                  href={`#${item.toLowerCase().replace(" ", "")}`}
-                  className="hover:text-primary px-3 py-2 text-sm font-medium text-[#0070f3]"
-                >
-                  {item}
-                </Link>
-              ))}
+              {["Home", "Hospitals", "Medicines", "Subscriptions"].map(
+                (item, index) => (
+                  <Link
+                    key={index}
+                    href={`#${item.toLowerCase().replace(" ", "")}`}
+                    className="hover:text-primary px-3 py-2 text-sm font-medium text-[#0070f3]"
+                  >
+                    {item}
+                  </Link>
+                )
+              )}
+              <Link
+                href={`/get-personalized-recommendation`}
+                className="hover:text-primary px-3 py-2 text-sm font-medium text-[#0070f3]"
+              >
+                ASK AI
+              </Link>
             </div>
           </div>
 
@@ -70,23 +71,23 @@ export default function Navbar() {
 
             {isAuthenticated ? (
               <>
-              <Button
-                variant="outline"
-                className="flex items-center gap-2 text-[#ff0000]"
-                onClick={handleLogout}
-              >
-                <LogOut className="h-4 w-4" />
-                Logout
-              </Button>
-              <Link href={"/profile/67cab7250b3cc6436cebd7a7"}>
-              <Button
-                variant="outline"
-                className="flex items-center gap-2 text-[#0048ff]"
-              >
-                <User className="h-4 w-4" />
-                Profile
-              </Button>
-              </Link>
+                <Button
+                  variant="outline"
+                  className="flex items-center gap-2 text-[#ff0000]"
+                  onClick={handleLogout}
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </Button>
+                <Link href={"/profile/67cab7250b3cc6436cebd7a7"}>
+                  <Button
+                    variant="outline"
+                    className="flex items-center gap-2 text-[#0048ff]"
+                  >
+                    <User className="h-4 w-4" />
+                    Profile
+                  </Button>
+                </Link>
               </>
             ) : (
               <>
