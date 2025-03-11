@@ -2,25 +2,27 @@ import connectToDatabase from "@/library/database/db";
 import User from "@/library/modals/User";
 import { NextRequest, NextResponse } from "next/server";
 
-
-export async function PATCH(req: NextRequest, { params }: { params: { email: string } }) {
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: Promise<{ email: string }> }
+) {
   try {
-    await connectToDatabase(); 
-    const { email } = await params;
-    const updateData = await req.json(); 
+    await connectToDatabase();
+    const email = (await params).email;
+    const updateData = await req.json();
 
-   
     if (!email) {
-      return NextResponse.json({ message: "Email parameter is required" }, { status: 400 });
+      return NextResponse.json(
+        { message: "Email parameter is required" },
+        { status: 400 }
+      );
     }
 
-    
     const user = await User.findOne({ email });
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
 
-  
     const updatedUser = await User.findOneAndUpdate(
       { email },
       { $set: updateData },

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import axios from "axios"
 import { z } from "zod"
@@ -11,19 +11,20 @@ import { Input } from "@/components/ui/input"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Loader2 } from "lucide-react"
 
-const verifySchema = z.object({
-  otp: z.string().length(6, "OTP must be 6 digits"),
-})
-
-type VerifyFormValues = z.infer<typeof verifySchema>
-
-export default function VerifyPage() {
+// Create a separate component that uses useSearchParams
+function VerifyForm() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
   const [timeLeft, setTimeLeft] = useState(300) 
   const router = useRouter()
   const searchParams = useSearchParams()
   const email = searchParams.get("email")
+
+  const verifySchema = z.object({
+    otp: z.string().length(6, "OTP must be 6 digits"),
+  })
+
+  type VerifyFormValues = z.infer<typeof verifySchema>
 
   useEffect(() => {
     if (!email) {
@@ -73,8 +74,8 @@ export default function VerifyPage() {
         router.push("/")
       }
     } catch (error: unknown) {
-      if(error  instanceof Error)
-      setError(error.message || "Invalid OTP")
+      if(error instanceof Error)
+        setError(error.message || "Invalid OTP")
     } finally {
       setIsLoading(false)
     }
@@ -163,3 +164,21 @@ export default function VerifyPage() {
   )
 }
 
+// Loading fallback component
+function VerifyPageLoading() {
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center">
+      <Loader2 className="h-10 w-10 animate-spin text-blue-500" />
+      <p className="mt-4 text-gray-600">Loading verification page...</p>
+    </div>
+  )
+}
+
+// Main page component with Suspense
+export default function VerifyPage() {
+  return (
+    <Suspense fallback={<VerifyPageLoading />}>
+      <VerifyForm />
+    </Suspense>
+  )
+}

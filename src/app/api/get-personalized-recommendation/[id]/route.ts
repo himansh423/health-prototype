@@ -162,14 +162,14 @@ async function fetchUserData(userId: string): Promise<UserData> {
 // Export typed GET handler
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<Response | NextResponse> {
   const responseStream = new TransformStream();
   const writer = responseStream.writable.getWriter();
   const encoder = new TextEncoder();
 
   try {
-    const { id } = params;
+   const id = (await params).id
     const userData: UserData = await fetchUserData(id);
 
     // Create the prompt with typed template literal

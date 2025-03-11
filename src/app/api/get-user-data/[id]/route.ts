@@ -4,13 +4,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectToDatabase();
-    const { id: userId } = params;
+    const id = (await params).id;
 
-    const user = await User.findById(userId);
+    const user = await User.findById(id);
 
     if (!user) {
       return NextResponse.json(

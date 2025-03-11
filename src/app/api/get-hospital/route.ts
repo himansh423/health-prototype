@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 export async function GET(req:Request) {
   try {
     await connectToDatabase();
-    console.log(req.json())
+    console.log(req.json()) 
     const hospitals = await Hospital.find();
 
     return NextResponse.json(

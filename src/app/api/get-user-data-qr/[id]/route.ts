@@ -1012,10 +1012,10 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse> {
   try {
-    const { id }: { id: string } = params;
+    const id = (await params).id
 
     const userData: UserData = await fetchUserData(id);
 
