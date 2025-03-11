@@ -17,14 +17,13 @@ async function fetchUserData(userId: string) {
   }
 }
 
-// Function to generate PDF from user data
 async function generatePDF(userData: any) {
   try {
-    // Create a new PDF document
+
     const pdfDoc = await PDFDocument.create()
     let page = pdfDoc.addPage()
 
-    // Define colors
+    
     const primaryBlue = rgb(0 / 255, 112 / 255, 243 / 255) // #0070f3
     const teal = rgb(67 / 255, 198 / 255, 184 / 255) // #43C6B8
     const orange = rgb(249 / 255, 115 / 255, 22 / 255) // #F97316
@@ -60,13 +59,13 @@ async function generatePDF(userData: any) {
       })
     }
 
-    // Helper function to check if we need a new page
+    
     const checkForNewPage = (currentY: number, requiredSpace = 150) => {
       if (currentY < requiredSpace) {
         page = pdfDoc.addPage()
         const { height } = page.getSize()
 
-        // Add a decorative header to the new page
+
         page.drawRectangle({
           x: 0,
           y: height - 50,
@@ -242,7 +241,7 @@ async function generatePDF(userData: any) {
 
     // Helper function to add a footer to all pages
     const addFooter = (pageObj: any) => {
-      const { width, height } = pageObj.getSize()
+      const { width } = pageObj.getSize()
 
       // Draw footer background
       pageObj.drawRectangle({
@@ -322,7 +321,7 @@ async function generatePDF(userData: any) {
       // Subscription benefits
       if (user.subscriptionBenefits && user.subscriptionBenefits.length > 0) {
         y = addDataRow("Benefits", "", y, rowIndex++)
-        user.subscriptionBenefits.forEach((benefit: string, index: number) => {
+        user.subscriptionBenefits.forEach((benefit: string) => {
           y = checkForNewPage(y, 30)
           addText(`• ${benefit}`, margin + 150, y, helveticaFont, 11, primaryBlue)
           y -= 20
@@ -331,7 +330,6 @@ async function generatePDF(userData: any) {
       y -= 10
     }
 
-    // Medical conditions as a table
     y = addSectionHeader("Chronic Conditions", y)
 
     if (user.chronicConditions && user.chronicConditions.length > 0) {
@@ -503,7 +501,7 @@ async function generatePDF(userData: any) {
     if (user.medicinePackages && user.medicinePackages.length > 0) {
       y = addSectionHeader("Medicine Packages", y)
 
-      user.medicinePackages.forEach((pkg: any, pkgIndex: number) => {
+      user.medicinePackages.forEach((pkg: any) => {
         // Check if we need a new page
         y = checkForNewPage(y, 120)
 
@@ -561,7 +559,7 @@ async function generatePDF(userData: any) {
           addText("Medications:", margin + 20, y, helveticaBoldFont, 12, black)
           y -= 15
 
-          pkg.medications.forEach((med: string, medIndex: number) => {
+          pkg.medications.forEach((med: string) => {
             addText(`• ${med}`, margin + 40, y, helveticaFont, 11, black)
             y -= 15
           })
