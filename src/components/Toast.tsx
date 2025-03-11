@@ -3,25 +3,28 @@
 import { useState, useEffect } from "react"
 import { X } from "lucide-react"
 
-type ToastProps = {
-  title: string
-  description?: string
-  variant?: "default" | "destructive"
-  duration?: number
+// Define the ToastProps interface
+interface ToastProps {
+  id?: string; // Optional id added for internal use in useToast
+  title: string;
+  description?: string;
+  variant?: "default" | "destructive";
+  duration?: number;
 }
 
+// Toast Component
 export function Toast({ title, description, variant = "default", duration = 3000 }: ToastProps) {
-  const [isVisible, setIsVisible] = useState(true)
+  const [isVisible, setIsVisible] = useState<boolean>(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsVisible(false)
-    }, duration)
+      setIsVisible(false);
+    }, duration);
 
-    return () => clearTimeout(timer)
-  }, [duration])
+    return () => clearTimeout(timer);
+  }, [duration]);
 
-  if (!isVisible) return null
+  if (!isVisible) return null;
 
   return (
     <div
@@ -40,22 +43,22 @@ export function Toast({ title, description, variant = "default", duration = 3000
         <X className="h-4 w-4" />
       </button>
     </div>
-  )
+  );
 }
 
+// useToast Hook
 export function useToast() {
-  const [toasts, setToasts] = useState<ToastProps[]>([])
+  const [toasts, setToasts] = useState<ToastProps[]>([]);
 
-  const toast = (props: ToastProps) => {
-    const id = Math.random().toString(36).substring(2, 9)
-    setToasts((prev) => [...prev, { ...props, id }])
+  const toast = (props: Omit<ToastProps, "id">) => { // Exclude 'id' from props since it's generated internally
+    const id = Math.random().toString(36).substring(2, 9);
+    const newToast: ToastProps = { ...props, id };
+    setToasts((prev: ToastProps[]) => [...prev, newToast]);
 
-    // Auto remove toast after duration
     setTimeout(() => {
-      setToasts((prev) => prev.filter((toast:any) => toast.id !== id))
-    }, props.duration || 3000)
-  }
+      setToasts((prev: ToastProps[]) => prev.filter((t: ToastProps) => t.id !== id));
+    }, props.duration || 3000);
+  };
 
-  return { toast, toasts }
+  return { toast, toasts };
 }
-

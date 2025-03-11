@@ -1,7 +1,5 @@
 "use client";
-
 import type React from "react";
-
 import { CardFooter } from "@/components/ui/card";
 import { useState, useEffect } from "react";
 import Image from "next/image";
@@ -170,16 +168,7 @@ export default function HospitalProfile() {
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibilit
   const BookAppointmentModal = () => {
-    const {
-      register,
-      handleSubmit,
-      formState: { errors },
-    } = useForm();
-
-    const onSubmit = (data: any) => {
-      console.log("Appointment Data:", data);
-      setIsModalOpen(false); // Close modal after submission
-    };
+    const { register } = useForm();
 
     return (
       <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -195,7 +184,7 @@ export default function HospitalProfile() {
               <X className="h-5 w-5" />
             </button>
           </div>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form className="space-y-4">
             <div>
               <Label htmlFor="purpose">Purpose of Visit</Label>
               <Input

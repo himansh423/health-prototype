@@ -72,8 +72,9 @@ export default function VerifyPage() {
       if (response.data.success) {
         router.push("/")
       }
-    } catch (error: any) {
-      setError(error.response?.data?.message || "Invalid OTP")
+    } catch (error: unknown) {
+      if(error  instanceof Error)
+      setError(error.message || "Invalid OTP")
     } finally {
       setIsLoading(false)
     }
@@ -86,7 +87,7 @@ export default function VerifyPage() {
           <h1 className="text-3xl font-bold" style={{ color: "#0070f3" }}>
             Verify Your Email
           </h1>
-          <p className="mt-2 text-gray-600">We've sent a 6-digit code to {email}</p>
+          <p className="mt-2 text-gray-600">We&apos;ve sent a 6-digit code to {email}</p>
         </div>
 
         {error && (
