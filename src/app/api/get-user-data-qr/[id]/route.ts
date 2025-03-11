@@ -183,7 +183,7 @@ interface UserData {
 async function fetchUserData(userId: string): Promise<UserData> {
   try {
     const response: Response = await fetch(
-      "https://health-prototype.vercel.app"
+      `https://health-prototype.vercel.app/api/get-user-data/${userId}`
     );
     if (!response.ok) {
       throw new Error("Failed to fetch user data");
