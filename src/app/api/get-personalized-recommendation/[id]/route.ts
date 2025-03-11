@@ -145,9 +145,7 @@ const genAI = new GoogleGenerativeAI(
 async function fetchUserData(userId: string): Promise<UserData> {
   try {
     const res = await axios.get<FetchUserDataResponse>(
-      `${
-        process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
-      }/api/get-user-data/${userId}`
+      "https://health-prototype.vercel.app"
     );
     if (!res.data.success) {
       throw new Error("Failed to fetch user data");
@@ -169,7 +167,7 @@ export async function GET(
   const encoder = new TextEncoder();
 
   try {
-   const id = (await params).id
+    const id = (await params).id;
     const userData: UserData = await fetchUserData(id);
 
     // Create the prompt with typed template literal
@@ -181,23 +179,104 @@ User Data:
 - Age: ${userData.age}
 - Gender: ${userData.gender}
 - Blood Group: ${userData.bloodGroup}
-- Address: ${userData.address.village}, ${userData.address.district}, ${userData.address.state}, ${userData.address.pincode}
-- Contact Details: Phone: ${userData.contactDetails.phone}, Email: ${userData.contactDetails.email}, Emergency Contact: ${userData.contactDetails.emergencyContact}
-- Chronic Conditions: ${userData.chronicConditions.map((condition) => `${condition.name} (Diagnosed: ${condition.diagnosedDate}, Severity: ${condition.severity}, Status: ${condition.status})`).join(", ")}
-- Allergies: ${userData.allergies.map((allergy) => `${allergy.allergen} (Type: ${allergy.type}, Severity: ${allergy.severity}, Reaction: ${allergy.reaction})`).join(", ")}
-- Current Medications: ${userData.currentMedications.map((med) => `${med.name} (Dosage: ${med.dosage}, Prescribed By: ${med.prescribedBy}, Next Refill: ${med.nextRefillDate})`).join(", ")}
-- Health Reports: ${userData.healthReports.map((report) => `${report.type}: ${report.latestReading} (Improvement: ${report.improvement ? "Yes" : "No"}, Improvement Value: ${report.improvementValue})`).join(", ")}
-- Upcoming Vaccinations: ${userData.upcomingVaccinations.map((vaccine) => `${vaccine.vaccineName} (Due Date: ${vaccine.dueDate}, Notes: ${vaccine.notes})`).join(", ")}
-- Recommended Vaccinations: ${userData.recommendedVaccinations.map((vaccine) => `${vaccine.vaccineName} (Priority: ${vaccine.priority}, Warning: ${vaccine.warning})`).join(", ")}
-- Insurance Coverage: ${userData.insuranceCoverage ? "Yes" : "No"} (Coverage Amount: ${userData.insuranceCoverageAmount}, Valid Until: ${userData.insuranceValidUntil})
+- Address: ${userData.address.village}, ${userData.address.district}, ${
+      userData.address.state
+    }, ${userData.address.pincode}
+- Contact Details: Phone: ${userData.contactDetails.phone}, Email: ${
+      userData.contactDetails.email
+    }, Emergency Contact: ${userData.contactDetails.emergencyContact}
+- Chronic Conditions: ${userData.chronicConditions
+      .map(
+        (condition) =>
+          `${condition.name} (Diagnosed: ${condition.diagnosedDate}, Severity: ${condition.severity}, Status: ${condition.status})`
+      )
+      .join(", ")}
+- Allergies: ${userData.allergies
+      .map(
+        (allergy) =>
+          `${allergy.allergen} (Type: ${allergy.type}, Severity: ${allergy.severity}, Reaction: ${allergy.reaction})`
+      )
+      .join(", ")}
+- Current Medications: ${userData.currentMedications
+      .map(
+        (med) =>
+          `${med.name} (Dosage: ${med.dosage}, Prescribed By: ${med.prescribedBy}, Next Refill: ${med.nextRefillDate})`
+      )
+      .join(", ")}
+- Health Reports: ${userData.healthReports
+      .map(
+        (report) =>
+          `${report.type}: ${report.latestReading} (Improvement: ${
+            report.improvement ? "Yes" : "No"
+          }, Improvement Value: ${report.improvementValue})`
+      )
+      .join(", ")}
+- Upcoming Vaccinations: ${userData.upcomingVaccinations
+      .map(
+        (vaccine) =>
+          `${vaccine.vaccineName} (Due Date: ${vaccine.dueDate}, Notes: ${vaccine.notes})`
+      )
+      .join(", ")}
+- Recommended Vaccinations: ${userData.recommendedVaccinations
+      .map(
+        (vaccine) =>
+          `${vaccine.vaccineName} (Priority: ${vaccine.priority}, Warning: ${vaccine.warning})`
+      )
+      .join(", ")}
+- Insurance Coverage: ${
+      userData.insuranceCoverage ? "Yes" : "No"
+    } (Coverage Amount: ${userData.insuranceCoverageAmount}, Valid Until: ${
+      userData.insuranceValidUntil
+    })
 - Subscription Benefits: ${userData.subscriptionBenefits.join(", ")}
-- Family Details: ${userData.familyDetails.map((member) => `${member.name} (Relationship: ${member.relationship}, Age: ${member.age}, Covered Under Insurance: ${member.coveredUnderInsurance ? "Yes" : "No"})`).join(", ")}
-- Government Schemes: ${userData.govtSchemes.map((scheme) => `${scheme.name} (Status: ${scheme.status}, Coverage: ${scheme.coverageDetails})`).join(", ")}
-- Past Medical Conditions: ${userData.pastMedicalConditions.map((condition) => `${condition.name} (Treatment: ${condition.treatment}, Dates: ${condition.startDate} to ${condition.endDate})`).join(", ")}
-- Hospital Visits: ${userData.hospitalVisits.map((visit) => `${visit.hospitalName} (Date: ${visit.date}, Doctor: ${visit.doctorName}, Diagnosis: ${visit.diagnosis})`).join(", ")}
-- Surgeries: ${userData.surgeries.map((surgery) => `${surgery.name} (Date: ${surgery.date}, Surgeon: ${surgery.surgeon}, Details: ${surgery.details})`).join(", ")}
-- Medicine Packages: ${userData.medicinePackages.map((pkg) => `${pkg.name} (Active: ${pkg.active ? "Yes" : "No"}, Next Delivery: ${pkg.nextDeliveryDate}, Medications: ${pkg.medications.join(", ")})`).join(", ")}
-- Vaccination Records: ${userData.vaccinationRecords.map((record) => `${record.vaccineName} (Date: ${record.date}, Location: ${record.location})`).join(", ")}
+- Family Details: ${userData.familyDetails
+      .map(
+        (member) =>
+          `${member.name} (Relationship: ${member.relationship}, Age: ${
+            member.age
+          }, Covered Under Insurance: ${
+            member.coveredUnderInsurance ? "Yes" : "No"
+          })`
+      )
+      .join(", ")}
+- Government Schemes: ${userData.govtSchemes
+      .map(
+        (scheme) =>
+          `${scheme.name} (Status: ${scheme.status}, Coverage: ${scheme.coverageDetails})`
+      )
+      .join(", ")}
+- Past Medical Conditions: ${userData.pastMedicalConditions
+      .map(
+        (condition) =>
+          `${condition.name} (Treatment: ${condition.treatment}, Dates: ${condition.startDate} to ${condition.endDate})`
+      )
+      .join(", ")}
+- Hospital Visits: ${userData.hospitalVisits
+      .map(
+        (visit) =>
+          `${visit.hospitalName} (Date: ${visit.date}, Doctor: ${visit.doctorName}, Diagnosis: ${visit.diagnosis})`
+      )
+      .join(", ")}
+- Surgeries: ${userData.surgeries
+      .map(
+        (surgery) =>
+          `${surgery.name} (Date: ${surgery.date}, Surgeon: ${surgery.surgeon}, Details: ${surgery.details})`
+      )
+      .join(", ")}
+- Medicine Packages: ${userData.medicinePackages
+      .map(
+        (pkg) =>
+          `${pkg.name} (Active: ${pkg.active ? "Yes" : "No"}, Next Delivery: ${
+            pkg.nextDeliveryDate
+          }, Medications: ${pkg.medications.join(", ")})`
+      )
+      .join(", ")}
+- Vaccination Records: ${userData.vaccinationRecords
+      .map(
+        (record) =>
+          `${record.vaccineName} (Date: ${record.date}, Location: ${record.location})`
+      )
+      .join(", ")}
 
 Instructions:
 1. Health Summary: Provide a brief summary of the user's current health status based on their chronic conditions, medications, and recent health reports.
@@ -232,7 +311,8 @@ Output Format:
         await writer.close();
       } catch (error) {
         console.error("Error processing stream:", error);
-        const errorMessage: string = "Error generating recommendations. Please try again.";
+        const errorMessage: string =
+          "Error generating recommendations. Please try again.";
         await writer.write(encoder.encode(errorMessage));
         await writer.close();
       }
@@ -245,7 +325,6 @@ Output Format:
         "Transfer-Encoding": "chunked",
       },
     });
-
   } catch (error) {
     console.error("Error generating recommendation:", error);
     return NextResponse.json(

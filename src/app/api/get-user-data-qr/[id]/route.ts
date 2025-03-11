@@ -1,5 +1,12 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { PDFDocument, StandardFonts, rgb, PDFPage, PDFFont, RGB } from "pdf-lib";
+import {
+  PDFDocument,
+  StandardFonts,
+  rgb,
+  PDFPage,
+  PDFFont,
+  RGB,
+} from "pdf-lib";
 
 // Comprehensive interfaces for user data structure
 interface ContactDetails {
@@ -176,12 +183,12 @@ interface UserData {
 async function fetchUserData(userId: string): Promise<UserData> {
   try {
     const response: Response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"}/api/get-user-data/${userId}`
+      "https://health-prototype.vercel.app"
     );
     if (!response.ok) {
       throw new Error("Failed to fetch user data");
     }
-    return await response.json() as UserData;
+    return (await response.json()) as UserData;
   } catch (error: unknown) {
     console.error("Error fetching user data:", error);
     throw error;
@@ -203,10 +210,18 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
     const lightBlue: RGB = rgb(0.9, 0.95, 1); // light blue for some backgrounds
 
     // Set up fonts
-    const helveticaFont: PDFFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
-    const helveticaBoldFont: PDFFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-    const timesRomanFont: PDFFont = await pdfDoc.embedFont(StandardFonts.TimesRoman);
-    const timesRomanBoldFont: PDFFont = await pdfDoc.embedFont(StandardFonts.TimesRomanBold);
+    const helveticaFont: PDFFont = await pdfDoc.embedFont(
+      StandardFonts.Helvetica
+    );
+    const helveticaBoldFont: PDFFont = await pdfDoc.embedFont(
+      StandardFonts.HelveticaBold
+    );
+    const timesRomanFont: PDFFont = await pdfDoc.embedFont(
+      StandardFonts.TimesRoman
+    );
+    const timesRomanBoldFont: PDFFont = await pdfDoc.embedFont(
+      StandardFonts.TimesRomanBold
+    );
 
     // Set up page dimensions
     const { width, height }: { width: number; height: number } = page.getSize();
@@ -242,7 +257,10 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
       });
     };
 
-    const checkForNewPage = (currentY: number, requiredSpace: number = 150): number => {
+    const checkForNewPage = (
+      currentY: number,
+      requiredSpace: number = 150
+    ): number => {
       if (currentY < requiredSpace) {
         page = pdfDoc.addPage();
         const { height }: { height: number } = page.getSize();
@@ -255,7 +273,14 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
           color: primaryBlue,
         });
 
-        addText("Health Profile - Continued", width / 2 - 100, height - 30, helveticaBoldFont, 18, white);
+        addText(
+          "Health Profile - Continued",
+          width / 2 - 100,
+          height - 30,
+          helveticaBoldFont,
+          18,
+          white
+        );
         return height - 70;
       }
       return currentY;
@@ -279,13 +304,38 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
       });
     }
 
-    addText("Health Profile", width / 2 - 100, height - 80, timesRomanBoldFont, 36, white);
-    drawLine(width / 2 - 100, height - 90, width / 2 + 100, height - 90, 2, white);
-    addText("Comprehensive Medical Record", width / 2 - 90, height - 110, timesRomanFont, 16, white);
+    addText(
+      "Health Profile",
+      width / 2 - 100,
+      height - 80,
+      timesRomanBoldFont,
+      36,
+      white
+    );
+    drawLine(
+      width / 2 - 100,
+      height - 90,
+      width / 2 + 100,
+      height - 90,
+      2,
+      white
+    );
+    addText(
+      "Comprehensive Medical Record",
+      width / 2 - 90,
+      height - 110,
+      timesRomanFont,
+      16,
+      white
+    );
 
     y = height - 170;
 
-    const createTableHeader = (headers: string[], yPos: number, rowWidth: number): number => {
+    const createTableHeader = (
+      headers: string[],
+      yPos: number,
+      rowWidth: number
+    ): number => {
       const cellWidth: number = rowWidth / headers.length;
 
       page.drawRectangle({
@@ -297,7 +347,14 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
       });
 
       headers.forEach((header: string, index: number) => {
-        addText(header, margin + index * cellWidth + 5, yPos, helveticaBoldFont, 12, white);
+        addText(
+          header,
+          margin + index * cellWidth + 5,
+          yPos,
+          helveticaBoldFont,
+          12,
+          white
+        );
 
         if (index < headers.length - 1) {
           drawLine(
@@ -314,7 +371,12 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
       return yPos - 30;
     };
 
-    const addTableRow = (values: string[], yPos: number, rowWidth: number, rowIndex: number): number => {
+    const addTableRow = (
+      values: string[],
+      yPos: number,
+      rowWidth: number,
+      rowIndex: number
+    ): number => {
       const cellWidth: number = rowWidth / values.length;
       const bgColor: RGB = rowIndex % 2 === 0 ? lightGray : white;
 
@@ -327,7 +389,14 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
       });
 
       values.forEach((value: string, index: number) => {
-        addText(value, margin + index * cellWidth + 5, yPos, helveticaFont, 10, black);
+        addText(
+          value,
+          margin + index * cellWidth + 5,
+          yPos,
+          helveticaFont,
+          10,
+          black
+        );
 
         if (index < values.length - 1) {
           drawLine(
@@ -379,7 +448,12 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
       return yPos - 40;
     };
 
-    const addDataRow = (label: string, value: string, yPos: number, rowIndex: number): number => {
+    const addDataRow = (
+      label: string,
+      value: string,
+      yPos: number,
+      rowIndex: number
+    ): number => {
       yPos = checkForNewPage(yPos, 30);
 
       const bgColor: RGB = rowIndex % 2 === 0 ? lightGray : white;
@@ -416,15 +490,20 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
         color: primaryBlue,
       });
 
-      pageObj.drawText("Health Profile Generated on " + new Date().toLocaleDateString(), {
-        x: margin,
-        y: 10,
-        font: helveticaFont,
-        size: 10,
-        color: white,
-      });
+      pageObj.drawText(
+        "Health Profile Generated on " + new Date().toLocaleDateString(),
+        {
+          x: margin,
+          y: 10,
+          font: helveticaFont,
+          size: 10,
+          color: white,
+        }
+      );
 
-      const pageIndex: number = pdfDoc.getPageIndices().indexOf(pdfDoc.getPages().indexOf(pageObj));
+      const pageIndex: number = pdfDoc
+        .getPageIndices()
+        .indexOf(pdfDoc.getPages().indexOf(pageObj));
       pageObj.drawText(`Page ${pageIndex + 1} of ${pdfDoc.getPageCount()}`, {
         x: width - margin - 60,
         y: 10,
@@ -451,10 +530,20 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
     y = addDataRow("Age", `${user.age}`, y, rowIndex++);
     y = addDataRow("Gender", `${user.gender}`, y, rowIndex++);
     y = addDataRow("Blood Group", `${user.bloodGroup}`, y, rowIndex++);
-    y = addDataRow("Date of Birth", `${new Date(user.dateOfBirth).toLocaleDateString()}`, y, rowIndex++);
+    y = addDataRow(
+      "Date of Birth",
+      `${new Date(user.dateOfBirth).toLocaleDateString()}`,
+      y,
+      rowIndex++
+    );
     y = addDataRow("Email", `${user.email}`, y, rowIndex++);
     y = addDataRow("Phone", `${user.contactDetails.phone}`, y, rowIndex++);
-    y = addDataRow("Emergency Contact", `${user.contactDetails.emergencyContact}`, y, rowIndex++);
+    y = addDataRow(
+      "Emergency Contact",
+      `${user.contactDetails.emergencyContact}`,
+      y,
+      rowIndex++
+    );
     if (user.governmentId) {
       y = addDataRow("Government ID", `${user.governmentId}`, y, rowIndex++);
     }
@@ -473,14 +562,26 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
       rowIndex = 0;
       y = addDataRow("Plan", `${user.subscriptionPlan}`, y, rowIndex++);
       if (user.subscriptionAmount) {
-        y = addDataRow("Amount", `Rs. ${user.subscriptionAmount}`, y, rowIndex++);
+        y = addDataRow(
+          "Amount",
+          `Rs. ${user.subscriptionAmount}`,
+          y,
+          rowIndex++
+        );
       }
 
       if (user.subscriptionBenefits && user.subscriptionBenefits.length > 0) {
         y = addDataRow("Benefits", "", y, rowIndex++);
         user.subscriptionBenefits.forEach((benefit: string) => {
           y = checkForNewPage(y, 30);
-          addText(`• ${benefit}`, margin + 150, y, helveticaFont, 11, primaryBlue);
+          addText(
+            `• ${benefit}`,
+            margin + 150,
+            y,
+            helveticaFont,
+            11,
+            primaryBlue
+          );
           y -= 20;
         });
       }
@@ -490,7 +591,13 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
     y = addSectionHeader("Chronic Conditions", y);
 
     if (user.chronicConditions && user.chronicConditions.length > 0) {
-      const conditionHeaders: string[] = ["Condition", "Diagnosed Date", "Severity", "Status", "Management"];
+      const conditionHeaders: string[] = [
+        "Condition",
+        "Diagnosed Date",
+        "Severity",
+        "Status",
+        "Management",
+      ];
       const tableWidth: number = width - 2 * margin;
       y = createTableHeader(conditionHeaders, y, tableWidth);
 
@@ -507,31 +614,33 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
         }
       };
 
-      user.chronicConditions.forEach((condition: ChronicCondition, index: number) => {
-        y = checkForNewPage(y, 40);
+      user.chronicConditions.forEach(
+        (condition: ChronicCondition, index: number) => {
+          y = checkForNewPage(y, 40);
 
-        const severityColor: RGB = getSeverityColor(condition.severity);
-        const severityText: string = `• ${condition.severity}`;
+          const severityColor: RGB = getSeverityColor(condition.severity);
+          const severityText: string = `• ${condition.severity}`;
 
-        const values: string[] = [
-          condition.name,
-          new Date(condition.diagnosedDate).toLocaleDateString(),
-          severityText,
-          condition.status,
-          condition.managementPlan.length > 20
-            ? condition.managementPlan.substring(0, 20) + "..."
-            : condition.managementPlan,
-        ];
+          const values: string[] = [
+            condition.name,
+            new Date(condition.diagnosedDate).toLocaleDateString(),
+            severityText,
+            condition.status,
+            condition.managementPlan.length > 20
+              ? condition.managementPlan.substring(0, 20) + "..."
+              : condition.managementPlan,
+          ];
 
-        y = addTableRow(values, y, tableWidth, index);
+          y = addTableRow(values, y, tableWidth, index);
 
-        page.drawCircle({
-          x: margin + (tableWidth / 5) * 2 + 5,
-          y: y + 25,
-          size: 5,
-          color: severityColor,
-        });
-      });
+          page.drawCircle({
+            x: margin + (tableWidth / 5) * 2 + 5,
+            y: y + 25,
+            size: 5,
+            color: severityColor,
+          });
+        }
+      );
     } else {
       y = addDataRow("Note", "No chronic conditions recorded.", y, 0);
     }
@@ -540,29 +649,41 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
     if (user.pastMedicalConditions && user.pastMedicalConditions.length > 0) {
       y = addSectionHeader("Past Medical Conditions", y);
 
-      const pastConditionHeaders: string[] = ["Condition", "Start Date", "End Date", "Treatment"];
+      const pastConditionHeaders: string[] = [
+        "Condition",
+        "Start Date",
+        "End Date",
+        "Treatment",
+      ];
       const tableWidth: number = width - 2 * margin;
       y = createTableHeader(pastConditionHeaders, y, tableWidth);
 
-      user.pastMedicalConditions.forEach((condition: PastMedicalCondition, index: number) => {
-        y = checkForNewPage(y, 40);
+      user.pastMedicalConditions.forEach(
+        (condition: PastMedicalCondition, index: number) => {
+          y = checkForNewPage(y, 40);
 
-        const values: string[] = [
-          condition.name,
-          new Date(condition.startDate).toLocaleDateString(),
-          new Date(condition.endDate).toLocaleDateString(),
-          condition.treatment,
-        ];
+          const values: string[] = [
+            condition.name,
+            new Date(condition.startDate).toLocaleDateString(),
+            new Date(condition.endDate).toLocaleDateString(),
+            condition.treatment,
+          ];
 
-        y = addTableRow(values, y, tableWidth, index);
-      });
+          y = addTableRow(values, y, tableWidth, index);
+        }
+      );
       y -= 10;
     }
 
     y = addSectionHeader("Allergies", y);
 
     if (user.allergies && user.allergies.length > 0) {
-      const allergyHeaders: string[] = ["Allergen", "Type", "Severity", "Reaction"];
+      const allergyHeaders: string[] = [
+        "Allergen",
+        "Type",
+        "Severity",
+        "Reaction",
+      ];
       const tableWidth: number = width - 2 * margin;
       y = createTableHeader(allergyHeaders, y, tableWidth);
 
@@ -573,7 +694,9 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
           allergy.allergen,
           allergy.type,
           allergy.severity,
-          allergy.reaction.length > 25 ? allergy.reaction.substring(0, 25) + "..." : allergy.reaction,
+          allergy.reaction.length > 25
+            ? allergy.reaction.substring(0, 25) + "..."
+            : allergy.reaction,
         ];
 
         y = addTableRow(values, y, tableWidth, index);
@@ -586,23 +709,33 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
     y = addSectionHeader("Current Medications", y);
 
     if (user.currentMedications && user.currentMedications.length > 0) {
-      const medicationHeaders: string[] = ["Medication", "Dosage", "Prescribed By", "Schedule", "Next Refill"];
+      const medicationHeaders: string[] = [
+        "Medication",
+        "Dosage",
+        "Prescribed By",
+        "Schedule",
+        "Next Refill",
+      ];
       const tableWidth: number = width - 2 * margin;
       y = createTableHeader(medicationHeaders, y, tableWidth);
 
-      user.currentMedications.forEach((medication: Medication, index: number) => {
-        y = checkForNewPage(y, 40);
+      user.currentMedications.forEach(
+        (medication: Medication, index: number) => {
+          y = checkForNewPage(y, 40);
 
-        const values: string[] = [
-          medication.name,
-          medication.dosage,
-          medication.prescribedBy,
-          medication.schedule,
-          medication.nextRefillDate ? new Date(medication.nextRefillDate).toLocaleDateString() : "N/A",
-        ];
+          const values: string[] = [
+            medication.name,
+            medication.dosage,
+            medication.prescribedBy,
+            medication.schedule,
+            medication.nextRefillDate
+              ? new Date(medication.nextRefillDate).toLocaleDateString()
+              : "N/A",
+          ];
 
-        y = addTableRow(values, y, tableWidth, index);
-      });
+          y = addTableRow(values, y, tableWidth, index);
+        }
+      );
     } else {
       y = addDataRow("Note", "No current medications recorded.", y, 0);
     }
@@ -611,24 +744,37 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
     if (user.previousMedications && user.previousMedications.length > 0) {
       y = addSectionHeader("Previous Medications", y);
 
-      const prevMedHeaders: string[] = ["Medication", "Dosage", "Prescribed By", "Start Date", "End Date", "Reason for Stopping"];
+      const prevMedHeaders: string[] = [
+        "Medication",
+        "Dosage",
+        "Prescribed By",
+        "Start Date",
+        "End Date",
+        "Reason for Stopping",
+      ];
       const tableWidth: number = width - 2 * margin;
       y = createTableHeader(prevMedHeaders, y, tableWidth);
 
-      user.previousMedications.forEach((medication: Medication, index: number) => {
-        y = checkForNewPage(y, 40);
+      user.previousMedications.forEach(
+        (medication: Medication, index: number) => {
+          y = checkForNewPage(y, 40);
 
-        const values: string[] = [
-          medication.name,
-          medication.dosage,
-          medication.prescribedBy,
-          medication.startDate ? new Date(medication.startDate).toLocaleDateString() : "N/A",
-          medication.endDate ? new Date(medication.endDate).toLocaleDateString() : "N/A",
-          medication.reasonForStopping || "N/A",
-        ];
+          const values: string[] = [
+            medication.name,
+            medication.dosage,
+            medication.prescribedBy,
+            medication.startDate
+              ? new Date(medication.startDate).toLocaleDateString()
+              : "N/A",
+            medication.endDate
+              ? new Date(medication.endDate).toLocaleDateString()
+              : "N/A",
+            medication.reasonForStopping || "N/A",
+          ];
 
-        y = addTableRow(values, y, tableWidth, index);
-      });
+          y = addTableRow(values, y, tableWidth, index);
+        }
+      );
       y -= 10;
     }
 
@@ -666,13 +812,18 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
           color: statusColor,
         });
 
-        addText(pkg.active ? "Active" : "Inactive", width - margin - 60, y + 7, helveticaFont, 12, statusColor);
+        addText(
+          pkg.active ? "Active" : "Inactive",
+          width - margin - 60,
+          y + 7,
+          helveticaFont,
+          12,
+          statusColor
+        );
 
         y -= 25;
-        addText(`Monthly Cost: Rs. ${pkg.monthlyCost}`, margin + 20, y, helveticaFont, 12, black);
-        y -= 15;
         addText(
-          `Next Delivery: ${new Date(pkg.nextDeliveryDate).toLocaleDateString()}`,
+          `Monthly Cost: Rs. ${pkg.monthlyCost}`,
           margin + 20,
           y,
           helveticaFont,
@@ -680,7 +831,25 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
           black
         );
         y -= 15;
-        addText(`Supply Remaining: ${pkg.supplyRemaining} days`, margin + 20, y, helveticaFont, 12, black);
+        addText(
+          `Next Delivery: ${new Date(
+            pkg.nextDeliveryDate
+          ).toLocaleDateString()}`,
+          margin + 20,
+          y,
+          helveticaFont,
+          12,
+          black
+        );
+        y -= 15;
+        addText(
+          `Supply Remaining: ${pkg.supplyRemaining} days`,
+          margin + 20,
+          y,
+          helveticaFont,
+          12,
+          black
+        );
         y -= 15;
 
         if (pkg.medications && pkg.medications.length > 0) {
@@ -701,24 +870,33 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
     y = addSectionHeader("Vaccination Records", y);
 
     if (user.vaccinationRecords && user.vaccinationRecords.length > 0) {
-      const vaccineHeaders: string[] = ["Vaccine", "Type", "Date", "Doctor", "Location", "Batch #"];
+      const vaccineHeaders: string[] = [
+        "Vaccine",
+        "Type",
+        "Date",
+        "Doctor",
+        "Location",
+        "Batch #",
+      ];
       const tableWidth: number = width - 2 * margin;
       y = createTableHeader(vaccineHeaders, y, tableWidth);
 
-      user.vaccinationRecords.forEach((vaccine: VaccinationRecord, index: number) => {
-        y = checkForNewPage(y, 40);
+      user.vaccinationRecords.forEach(
+        (vaccine: VaccinationRecord, index: number) => {
+          y = checkForNewPage(y, 40);
 
-        const values: string[] = [
-          vaccine.vaccineName,
-          vaccine.type,
-          new Date(vaccine.date).toLocaleDateString(),
-          vaccine.doctorName,
-          vaccine.location,
-          vaccine.batchNumber,
-        ];
+          const values: string[] = [
+            vaccine.vaccineName,
+            vaccine.type,
+            new Date(vaccine.date).toLocaleDateString(),
+            vaccine.doctorName,
+            vaccine.location,
+            vaccine.batchNumber,
+          ];
 
-        y = addTableRow(values, y, tableWidth, index);
-      });
+          y = addTableRow(values, y, tableWidth, index);
+        }
+      );
     } else {
       y = addDataRow("Note", "No vaccination records available.", y, 0);
     }
@@ -727,52 +905,79 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
     if (user.upcomingVaccinations && user.upcomingVaccinations.length > 0) {
       y = addSectionHeader("Upcoming Vaccinations", y);
 
-      const upcomingVaccineHeaders: string[] = ["Vaccine", "Due Date", "Free Under Govt Scheme", "Notes"];
+      const upcomingVaccineHeaders: string[] = [
+        "Vaccine",
+        "Due Date",
+        "Free Under Govt Scheme",
+        "Notes",
+      ];
       const tableWidth: number = width - 2 * margin;
       y = createTableHeader(upcomingVaccineHeaders, y, tableWidth);
 
-      user.upcomingVaccinations.forEach((vaccine: UpcomingVaccination, index: number) => {
-        y = checkForNewPage(y, 40);
+      user.upcomingVaccinations.forEach(
+        (vaccine: UpcomingVaccination, index: number) => {
+          y = checkForNewPage(y, 40);
 
-        const values: string[] = [
-          vaccine.vaccineName,
-          new Date(vaccine.dueDate).toLocaleDateString(),
-          vaccine.freeUnderGovtScheme ? "Yes" : "No",
-          vaccine.notes || "",
-        ];
+          const values: string[] = [
+            vaccine.vaccineName,
+            new Date(vaccine.dueDate).toLocaleDateString(),
+            vaccine.freeUnderGovtScheme ? "Yes" : "No",
+            vaccine.notes || "",
+          ];
 
-        y = addTableRow(values, y, tableWidth, index);
-      });
+          y = addTableRow(values, y, tableWidth, index);
+        }
+      );
       y -= 10;
     }
 
-    if (user.recommendedVaccinations && user.recommendedVaccinations.length > 0) {
+    if (
+      user.recommendedVaccinations &&
+      user.recommendedVaccinations.length > 0
+    ) {
       y = addSectionHeader("Recommended Vaccinations", y);
 
-      const recVaccineHeaders: string[] = ["Vaccine", "Description", "Priority", "Free Under Govt Scheme", "Warning"];
+      const recVaccineHeaders: string[] = [
+        "Vaccine",
+        "Description",
+        "Priority",
+        "Free Under Govt Scheme",
+        "Warning",
+      ];
       const tableWidth: number = width - 2 * margin;
       y = createTableHeader(recVaccineHeaders, y, tableWidth);
 
-      user.recommendedVaccinations.forEach((vaccine: RecommendedVaccination, index: number) => {
-        y = checkForNewPage(y, 40);
+      user.recommendedVaccinations.forEach(
+        (vaccine: RecommendedVaccination, index: number) => {
+          y = checkForNewPage(y, 40);
 
-        const values: string[] = [
-          vaccine.vaccineName,
-          vaccine.description.length > 20 ? vaccine.description.substring(0, 20) + "..." : vaccine.description,
-          vaccine.priority,
-          vaccine.freeUnderGovtScheme ? "Yes" : "No",
-          vaccine.warning || "",
-        ];
+          const values: string[] = [
+            vaccine.vaccineName,
+            vaccine.description.length > 20
+              ? vaccine.description.substring(0, 20) + "..."
+              : vaccine.description,
+            vaccine.priority,
+            vaccine.freeUnderGovtScheme ? "Yes" : "No",
+            vaccine.warning || "",
+          ];
 
-        y = addTableRow(values, y, tableWidth, index);
-      });
+          y = addTableRow(values, y, tableWidth, index);
+        }
+      );
       y -= 10;
     }
 
     y = addSectionHeader("Hospital Visits", y);
 
     if (user.hospitalVisits && user.hospitalVisits.length > 0) {
-      const visitHeaders: string[] = ["Hospital", "Type", "Date", "Doctor", "Specialization", "Diagnosis"];
+      const visitHeaders: string[] = [
+        "Hospital",
+        "Type",
+        "Date",
+        "Doctor",
+        "Specialization",
+        "Diagnosis",
+      ];
       const tableWidth: number = width - 2 * margin;
       y = createTableHeader(visitHeaders, y, tableWidth);
 
@@ -785,7 +990,9 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
           new Date(visit.date).toLocaleDateString(),
           visit.doctorName,
           visit.specialization,
-          visit.diagnosis.length > 20 ? visit.diagnosis.substring(0, 20) + "..." : visit.diagnosis,
+          visit.diagnosis.length > 20
+            ? visit.diagnosis.substring(0, 20) + "..."
+            : visit.diagnosis,
         ];
 
         y = addTableRow(values, y, tableWidth, index);
@@ -798,7 +1005,14 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
     y = addSectionHeader("Surgeries", y);
 
     if (user.surgeries && user.surgeries.length > 0) {
-      const surgeryHeaders: string[] = ["Surgery", "Date", "Hospital", "Surgeon", "Details", "Follow-up"];
+      const surgeryHeaders: string[] = [
+        "Surgery",
+        "Date",
+        "Hospital",
+        "Surgeon",
+        "Details",
+        "Follow-up",
+      ];
       const tableWidth: number = width - 2 * margin;
       y = createTableHeader(surgeryHeaders, y, tableWidth);
 
@@ -810,7 +1024,9 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
           new Date(surgery.date).toLocaleDateString(),
           surgery.hospital,
           surgery.surgeon,
-          surgery.details.length > 15 ? surgery.details.substring(0, 15) + "..." : surgery.details,
+          surgery.details.length > 15
+            ? surgery.details.substring(0, 15) + "..."
+            : surgery.details,
           new Date(surgery.followUp).toLocaleDateString(),
         ];
 
@@ -824,17 +1040,37 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
     if (user.healthReports && user.healthReports.length > 0) {
       y = addSectionHeader("Health Reports", y);
 
-      const reportHeaders: string[] = ["Type", "Summary", "Period", "First Reading", "Latest Reading", "Improvement"];
+      const reportHeaders: string[] = [
+        "Type",
+        "Summary",
+        "Period",
+        "First Reading",
+        "Latest Reading",
+        "Improvement",
+      ];
       const tableWidth: number = width - 2 * margin;
       y = createTableHeader(reportHeaders, y, tableWidth);
 
       user.healthReports.forEach((report: HealthReport, index: number) => {
         y = checkForNewPage(y, 40);
 
-        const period: string = `${new Date(report.startDate).toLocaleDateString()} - ${new Date(report.endDate).toLocaleDateString()}`;
-        const improvementText: string = report.improvement ? `Yes (${report.improvementValue || ""})` : "No";
+        const period: string = `${new Date(
+          report.startDate
+        ).toLocaleDateString()} - ${new Date(
+          report.endDate
+        ).toLocaleDateString()}`;
+        const improvementText: string = report.improvement
+          ? `Yes (${report.improvementValue || ""})`
+          : "No";
 
-        const values: string[] = [report.type, report.summary, period, report.firstReading, report.latestReading, improvementText];
+        const values: string[] = [
+          report.type,
+          report.summary,
+          period,
+          report.firstReading,
+          report.latestReading,
+          improvementText,
+        ];
 
         y = addTableRow(values, y, tableWidth, index);
       });
@@ -844,7 +1080,12 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
     y = addSectionHeader("Family Details", y);
 
     if (user.familyDetails && user.familyDetails.length > 0) {
-      const familyHeaders: string[] = ["Name", "Relationship", "Age", "Covered Under Insurance"];
+      const familyHeaders: string[] = [
+        "Name",
+        "Relationship",
+        "Age",
+        "Covered Under Insurance",
+      ];
       const tableWidth: number = width - 2 * margin;
       y = createTableHeader(familyHeaders, y, tableWidth);
 
@@ -889,7 +1130,14 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
         color: primaryBlue,
       });
 
-      addText("Insurance Card", margin + 10, y - 15, helveticaBoldFont, 14, white);
+      addText(
+        "Insurance Card",
+        margin + 10,
+        y - 15,
+        helveticaBoldFont,
+        14,
+        white
+      );
 
       page.drawCircle({
         x: width - margin - 50,
@@ -899,20 +1147,58 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
       });
 
       y -= 40;
-      addText(`Provider: ${user.insuranceProvider || "N/A"}`, margin + 20, y, helveticaBoldFont, 12, black);
+      addText(
+        `Provider: ${user.insuranceProvider || "N/A"}`,
+        margin + 20,
+        y,
+        helveticaBoldFont,
+        12,
+        black
+      );
       y -= 15;
-      addText(`Policy Number: ${user.insurancePolicyNumber || "N/A"}`, margin + 20, y, helveticaFont, 12, black);
+      addText(
+        `Policy Number: ${user.insurancePolicyNumber || "N/A"}`,
+        margin + 20,
+        y,
+        helveticaFont,
+        12,
+        black
+      );
       y -= 15;
-      addText(`Type: ${user.insuranceType || "N/A"}`, margin + 20, y, helveticaFont, 12, black);
+      addText(
+        `Type: ${user.insuranceType || "N/A"}`,
+        margin + 20,
+        y,
+        helveticaFont,
+        12,
+        black
+      );
       y -= 15;
 
       const coverageAmount: number = user.insuranceCoverageAmount;
       const usedAmount: number = user.insuranceUsed;
-      const remainingPercentage: number = Math.max(0, 100 - (usedAmount / coverageAmount) * 100);
+      const remainingPercentage: number = Math.max(
+        0,
+        100 - (usedAmount / coverageAmount) * 100
+      );
 
-      addText(`Coverage: Rs. ${coverageAmount.toLocaleString()}`, margin + 20, y, helveticaFont, 12, black);
+      addText(
+        `Coverage: Rs. ${coverageAmount.toLocaleString()}`,
+        margin + 20,
+        y,
+        helveticaFont,
+        12,
+        black
+      );
       y -= 15;
-      addText(`Used: Rs. ${usedAmount.toLocaleString()}`, margin + 20, y, helveticaFont, 12, black);
+      addText(
+        `Used: Rs. ${usedAmount.toLocaleString()}`,
+        margin + 20,
+        y,
+        helveticaFont,
+        12,
+        black
+      );
       y -= 15;
 
       const barWidth: number = 200;
@@ -933,11 +1219,18 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
         y: y - 5,
         width: usedWidth,
         height: 10,
-        color: remainingPercentage < 20 ? rgb(0.9, 0.2, 0.2) : remainingPercentage < 50 ? orange : teal,
+        color:
+          remainingPercentage < 20
+            ? rgb(0.9, 0.2, 0.2)
+            : remainingPercentage < 50
+            ? orange
+            : teal,
       });
 
       addText(
-        `Valid Until: ${new Date(user.insuranceValidUntil).toLocaleDateString()}`,
+        `Valid Until: ${new Date(
+          user.insuranceValidUntil
+        ).toLocaleDateString()}`,
         margin + 20,
         y - 20,
         helveticaFont,
@@ -953,7 +1246,13 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
     y = addSectionHeader("Government Schemes", y);
 
     if (user.govtSchemes && user.govtSchemes.length > 0) {
-      const schemeHeaders: string[] = ["Scheme", "Status", "Card Number", "Valid Until", "Coverage"];
+      const schemeHeaders: string[] = [
+        "Scheme",
+        "Status",
+        "Card Number",
+        "Valid Until",
+        "Coverage",
+      ];
       const tableWidth: number = width - 2 * margin;
       y = createTableHeader(schemeHeaders, y, tableWidth);
 
@@ -965,7 +1264,9 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
           scheme.status,
           scheme.cardNumber,
           new Date(scheme.validUntil).toLocaleDateString(),
-          scheme.coverageDetails.length > 20 ? scheme.coverageDetails.substring(0, 20) + "..." : scheme.coverageDetails,
+          scheme.coverageDetails.length > 20
+            ? scheme.coverageDetails.substring(0, 20) + "..."
+            : scheme.coverageDetails,
         ];
 
         y = addTableRow(values, y, tableWidth, index);
@@ -977,7 +1278,13 @@ async function generatePDF(userData: UserData): Promise<Buffer> {
     if (user.appointments && user.appointments.length > 0) {
       y = addSectionHeader("Upcoming Appointments", y);
 
-      const appointmentHeaders: string[] = ["Date", "Time", "Doctor", "Hospital", "Purpose"];
+      const appointmentHeaders: string[] = [
+        "Date",
+        "Time",
+        "Doctor",
+        "Hospital",
+        "Purpose",
+      ];
       const tableWidth: number = width - 2 * margin;
       y = createTableHeader(appointmentHeaders, y, tableWidth);
 
@@ -1015,12 +1322,14 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse> {
   try {
-    const id = (await params).id
+    const id = (await params).id;
 
     const userData: UserData = await fetchUserData(id);
 
     // Sanitize userData by replacing ₹ with Rs.
-    const sanitizedUserData: UserData = JSON.parse(JSON.stringify(userData).replace(/₹/g, "Rs.")) as UserData;
+    const sanitizedUserData: UserData = JSON.parse(
+      JSON.stringify(userData).replace(/₹/g, "Rs.")
+    ) as UserData;
 
     const pdfBuffer: Buffer = await generatePDF(sanitizedUserData);
 

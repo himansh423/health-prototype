@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Create the URL for the PDF download
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+    const baseUrl = "https://health-prototype.vercel.app"
     const pdfUrl = `${baseUrl}/api/get-user-data-qr/${userId}`
 
     // Generate QR code as data URL
