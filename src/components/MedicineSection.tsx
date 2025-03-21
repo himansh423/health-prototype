@@ -19,7 +19,7 @@ import Amlodipine from "../../public/Amlodipine-5mg.jpg";
 import Atorvastatin from "../../public/Atorvastatin-10mg.jpeg";
 import Levothyroxine from "../../public/Levothyroxine-50mcg.jpg";
 import Omeprazole from "../../public/Omeprazole-20mg.webp";
-import Azithromycin from "../../public/Azithromycin-500mg.webp"
+import Azithromycin from "../../public/Azithromycin-500mg.webp";
 const medicines = [
   {
     id: 1,
