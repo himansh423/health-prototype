@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
-
+import { useState, useRef, useEffect, useCallback } from "react"
 import type React from "react"
 
-import { useState, useRef, useEffect } from "react"
 import { Send, Loader2, MessageSquare, Globe, User, Bot, Volume2, VolumeX, Mic, MicOff } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -12,25 +11,10 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { cn } from "@/lib/utils"
 import { useToast } from "./Toast"
 
-
 interface Message {
   role: "user" | "assistant"
   content: string
   language: "english" | "hindi"
-}
-
-
-declare global {
-  interface Window {
-    SpeechRecognition: any
-    webkitSpeechRecognition: any
-  }
-  interface SpeechRecognitionEvent extends Event {
-    results: SpeechRecognitionResultList
-  }
-  interface SpeechRecognitionErrorEvent extends Event {
-    error: string
-  }
 }
 
 export default function HealthChatbot() {
@@ -38,61 +22,71 @@ export default function HealthChatbot() {
   const [input, setInput] = useState("")
   const [loading, setLoading] = useState(false)
   const [language, setLanguage] = useState<"english" | "hindi">("english")
-  const [isListening, setIsListening] = useState(false)
   const [isSpeaking, setIsSpeaking] = useState(false)
+  const [listening, setListening] = useState(false)
+  const [audioLevel, setAudioLevel] = useState(0)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const { toast } = useToast()
-  const recognitionRef = useRef<typeof SpeechRecognition | null>(null)
   const synthRef = useRef<SpeechSynthesis | null>(null)
+  const mediaStreamRef = useRef<MediaStream | null>(null)
+  const audioContextRef = useRef<AudioContext | null>(null)
+  const analyserRef = useRef<AnalyserNode | null>(null)
+  const animationFrameRef = useRef<number | null>(null)
+  const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const manualTranscriptionRef = useRef<boolean>(false)
 
+  // Initialize speech synthesis
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      if ("SpeechRecognition" in window || "webkitSpeechRecognition" in window) {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-        recognitionRef.current = new SpeechRecognition()
-        recognitionRef.current.continuous = false
-        recognitionRef.current.interimResults = false
-      }
-
-      if ("speechSynthesis" in window) {
-        synthRef.current = window.speechSynthesis
-      }
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
+      synthRef.current = window.speechSynthesis
     }
 
     return () => {
-      if (recognitionRef.current) {
-        recognitionRef.current.abort()
-      }
       if (synthRef.current) {
         synthRef.current.cancel()
       }
+      cleanupAudio()
     }
   }, [])
 
-  useEffect(() => {
-    if (recognitionRef.current) {
-      recognitionRef.current.lang = language === "english" ? "en-US" : "hi-IN"
-    }
-  }, [language])
-
+  // Scroll to latest message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages])
-  useEffect(() => {
-    if (recognitionRef.current) {
-      recognitionRef.current.lang = language === "english" ? "en-US" : "hi-IN"
-    }
-  }, [language])
 
-  
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [messages])
+  const cleanupAudio = useCallback(() => {
+    // Cancel any pending animation frames
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current)
+      animationFrameRef.current = null
+    }
+
+    // Clear any retry timeouts
+    if (retryTimeoutRef.current) {
+      clearTimeout(retryTimeoutRef.current)
+      retryTimeoutRef.current = null
+    }
+
+    // Stop all media tracks
+    if (mediaStreamRef.current) {
+      mediaStreamRef.current.getTracks().forEach((track) => track.stop())
+      mediaStreamRef.current = null
+    }
+
+    // Close audio context
+    if (audioContextRef.current && audioContextRef.current.state !== "closed") {
+      audioContextRef.current.close().catch((err) => console.error("Error closing audio context:", err))
+      audioContextRef.current = null
+    }
+
+    analyserRef.current = null
+    setListening(false)
+    setAudioLevel(0)
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!input.trim()) return
-
 
     const userMessage: Message = {
       role: "user",
@@ -104,7 +98,6 @@ export default function HealthChatbot() {
     setLoading(true)
 
     try {
-      
       const response = await fetch("/api/health-chatbot", {
         method: "POST",
         headers: {
@@ -113,7 +106,7 @@ export default function HealthChatbot() {
         body: JSON.stringify({
           message: input,
           language,
-          userId: "67cab7250b3cc6436cebd7a7", 
+          userId: "67cab7250b3cc6436cebd7a7",
         }),
       })
 
@@ -123,7 +116,6 @@ export default function HealthChatbot() {
 
       const data = await response.json()
 
-      
       const assistantMessage: Message = {
         role: "assistant",
         content: data.response,
@@ -132,7 +124,7 @@ export default function HealthChatbot() {
       setMessages((prev) => [...prev, assistantMessage])
     } catch (error) {
       console.error("Error:", error)
-    
+
       const errorMessage: Message = {
         role: "assistant",
         content:
@@ -147,51 +139,184 @@ export default function HealthChatbot() {
     }
   }
 
-  const startListening = () => {
-    if (!recognitionRef.current) {
+  // Manual transcription function that doesn't rely on the Web Speech API
+  const processAudioForTranscription = (audioBuffer: Float32Array) => {
+    // This is a placeholder for manual transcription
+    // In a real implementation, you would send this audio buffer to a server
+    // for processing with a more reliable speech-to-text service
+
+    // For now, we'll just detect if there's sound and notify the user
+    const sum = audioBuffer.reduce((acc, val) => acc + Math.abs(val), 0)
+    const average = sum / audioBuffer.length
+
+    // If we detect significant audio and we're in manual transcription mode
+    if (average > 0.01 && manualTranscriptionRef.current) {
       toast({
-        title: language === "english" ? "Not supported" : "समर्थित नहीं है",
+        title: language === "english" ? "Audio Detected" : "ऑडियो का पता चला",
         description:
           language === "english"
-            ? "Speech recognition is not supported in your browser."
-            : "आपके ब्राउज़र में स्पीच रिकग्निशन समर्थित नहीं है।",
-        variant: "destructive",
+            ? "We detected audio. Please type your message if voice recognition isn't working."
+            : "हमने ऑडियो का पता लगाया। यदि आवाज पहचान काम नहीं कर रही है तो कृपया अपना संदेश टाइप करें।",
       })
-      return
+
+      // Only show this message once per listening session
+      manualTranscriptionRef.current = false
     }
+  }
 
-    setIsListening(true)
+  const startListening = async () => {
+    // Stop any ongoing speech
+    stopSpeaking()
 
-    recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
-      const transcript = event.results[0][0].transcript
-      setInput(transcript)
-    }
+    // Clean up any existing audio
+    cleanupAudio()
 
-    recognitionRef.current.onend = () => {
-      setIsListening(false)
-    }
+    try {
+      // Set manual transcription flag
+      manualTranscriptionRef.current = true
 
-    recognitionRef.current.onerror = (event: SpeechRecognitionErrorEvent) => {
-      console.error("Speech recognition error", event.error)
-      setIsListening(false)
+      // Request microphone access
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+        },
+      })
+
+      mediaStreamRef.current = stream
+
+      // Create audio context and analyzer
+      const AudioContext = window.AudioContext || (window as any).webkitAudioContext
+      if (!AudioContext) {
+        throw new Error("AudioContext not supported")
+      }
+
+      audioContextRef.current = new AudioContext()
+      analyserRef.current = audioContextRef.current.createAnalyser()
+      const source = audioContextRef.current.createMediaStreamSource(stream)
+      source.connect(analyserRef.current)
+
+      // Configure analyzer
+      analyserRef.current.fftSize = 256
+      const bufferLength = analyserRef.current.frequencyBinCount
+      const dataArray = new Uint8Array(bufferLength)
+
+      // For manual transcription
+      const scriptProcessor = audioContextRef.current.createScriptProcessor(4096, 1, 1)
+      const audioBuffer = new Float32Array(4096)
+
+      scriptProcessor.onaudioprocess = (audioProcessingEvent) => {
+        const inputBuffer = audioProcessingEvent.inputBuffer
+        const inputData = inputBuffer.getChannelData(0)
+        audioBuffer.set(inputData)
+        processAudioForTranscription(audioBuffer)
+      }
+
+      source.connect(scriptProcessor)
+      scriptProcessor.connect(audioContextRef.current.destination)
+
+      // Start voice detection
+      setListening(true)
+
+      // Start audio analysis loop for visualization
+      const analyzeAudio = () => {
+        if (!listening || !analyserRef.current) return
+
+        analyserRef.current.getByteFrequencyData(dataArray)
+
+        // Calculate average volume level (0-100)
+        const average = Array.from(dataArray).reduce((sum, value) => sum + value, 0) / dataArray.length
+        const normalizedLevel = Math.min(100, Math.max(0, average * 2)) // Scale for better visualization
+        setAudioLevel(normalizedLevel)
+
+        // Continue the loop
+        animationFrameRef.current = requestAnimationFrame(analyzeAudio)
+      }
+
+      analyzeAudio()
+
+      // Try to use the Web Speech API as a fallback
+      try {
+        const SpeechRecognition = window.SpeechRecognition || (window as any).webkitSpeechRecognition
+        if (SpeechRecognition) {
+          const recognition = new SpeechRecognition()
+          recognition.lang = language === "english" ? "en-US" : "hi-IN"
+          recognition.continuous = false
+          recognition.interimResults = false
+
+          recognition.onresult = (event: any) => {
+            const transcript = event.results[0][0].transcript
+            setInput(transcript)
+          }
+
+          recognition.onerror = (event: any) => {
+            console.log("Speech recognition error:", event.error)
+
+            if (event.error === "no-speech") {
+              // If we get a no-speech error, retry after a short delay
+              if (retryTimeoutRef.current) {
+                clearTimeout(retryTimeoutRef.current)
+              }
+
+              retryTimeoutRef.current = setTimeout(() => {
+                if (listening) {
+                  try {
+                    recognition.stop()
+                    setTimeout(() => {
+                      if (listening) {
+                        recognition.start()
+                      }
+                    }, 100)
+                  } catch (e) {
+                    console.error("Error restarting recognition:", e)
+                  }
+                }
+              }, 1000)
+            }
+          }
+
+          recognition.onend = () => {
+            // Restart recognition if we're still listening
+            if (listening) {
+              try {
+                recognition.start()
+              } catch (e) {
+                console.error("Error restarting recognition:", e)
+              }
+            }
+          }
+
+          // Start recognition
+          recognition.start()
+        }
+      } catch (e) {
+        console.log("Web Speech API not available or error:", e)
+        // Continue with manual audio processing only
+      }
+
       toast({
-        title: language === "english" ? "Error" : "त्रुटि",
+        title: language === "english" ? "Listening..." : "सुन रहा हूँ...",
+        description:
+          language === "english" ? "Please speak clearly into your microphone." : "कृपया अपने माइक्रोफ़ोन में स्पष्ट रूप से बोलें।",
+      })
+    } catch (error) {
+      console.error("Failed to start audio capture:", error)
+      cleanupAudio()
+
+      toast({
+        title: language === "english" ? "Microphone Error" : "माइक्रोफोन त्रुटि",
         description:
           language === "english"
-            ? "Failed to recognize speech. Please try again."
-            : "भाषण को पहचानने में विफल। कृपया पुनः प्रयास करें।",
+            ? "Could not access microphone. Please check permissions."
+            : "माइक्रोफोन तक पहुंच नहीं सकता। कृपया अनुमतियां जांचें।",
         variant: "destructive",
       })
     }
-
-    recognitionRef.current.start()
   }
 
   const stopListening = () => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop()
-      setIsListening(false)
-    }
+    cleanupAudio()
   }
 
   const speakMessage = (text: string) => {
@@ -207,12 +332,15 @@ export default function HealthChatbot() {
       return
     }
 
-   
-    synthRef.current.cancel()
+    // Stop any ongoing speech
+    stopSpeaking()
 
+    // Create a new utterance
     const utterance = new SpeechSynthesisUtterance(text)
     utterance.lang = language === "english" ? "en-US" : "hi-IN"
+    utterance.rate = 0.9 // Slightly slower for better clarity
 
+    // Set up event handlers
     utterance.onstart = () => {
       setIsSpeaking(true)
     }
@@ -221,7 +349,8 @@ export default function HealthChatbot() {
       setIsSpeaking(false)
     }
 
-    utterance.onerror = () => {
+    utterance.onerror = (event) => {
+      console.error("Speech synthesis error:", event)
       setIsSpeaking(false)
       toast({
         title: language === "english" ? "Error" : "त्रुटि",
@@ -231,6 +360,7 @@ export default function HealthChatbot() {
       })
     }
 
+    // Start speaking
     synthRef.current.speak(utterance)
   }
 
@@ -339,38 +469,55 @@ export default function HealthChatbot() {
           </div>
         </CardContent>
         <CardFooter className="p-4 border-t bg-gradient-to-b from-white to-blue-50">
-          <form onSubmit={handleSubmit} className="w-full flex gap-2">
-            <div className="relative flex-1">
-              <Textarea
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder={
-                  language === "english" ? "Type your health question here..." : "अपना स्वास्थ्य प्रश्न यहां टाइप करें..."
-                }
-                className="min-h-[50px] pr-10 resize-none border-blue-200 focus:border-[#0070f3] focus:ring-1 focus:ring-[#0070f3]"
-                disabled={loading || isListening}
-              />
-              <button
-                type="button"
-                onClick={isListening ? stopListening : startListening}
-                className={cn(
-                  "absolute right-2 top-2 p-1 rounded-full",
-                  isListening ? "bg-red-100 text-red-500" : "bg-blue-100 text-blue-500",
-                  "hover:bg-opacity-80 transition-colors",
-                )}
-                disabled={loading}
-                aria-label={isListening ? "Stop listening" : "Start voice input"}
+          <form onSubmit={handleSubmit} className="w-full flex flex-col gap-2">
+            {listening && (
+              <div className="w-full h-6 bg-gray-200 rounded-full overflow-hidden mb-2">
+                <div
+                  className="h-full bg-gradient-to-r from-blue-400 to-blue-600 transition-all duration-200"
+                  style={{ width: `${audioLevel}%` }}
+                />
+              </div>
+            )}
+            <div className="flex gap-2">
+              <div className="relative flex-1">
+                <Textarea
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder={
+                    language === "english" ? "Type your health question here..." : "अपना स्वास्थ्य प्रश्न यहां टाइप करें..."
+                  }
+                  className="min-h-[50px] pr-10 resize-none border-blue-200 focus:border-[#0070f3] focus:ring-1 focus:ring-[#0070f3]"
+                  disabled={loading}
+                />
+                <button
+                  type="button"
+                  onClick={listening ? stopListening : startListening}
+                  className={cn(
+                    "absolute right-2 top-2 p-1 rounded-full",
+                    listening ? "bg-red-100 text-red-500" : "bg-blue-100 text-blue-500",
+                    "hover:bg-opacity-80 transition-colors",
+                  )}
+                  disabled={loading}
+                  aria-label={listening ? "Stop listening" : "Start voice input"}
+                >
+                  {listening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                </button>
+              </div>
+              <Button
+                type="submit"
+                disabled={loading || !input.trim()}
+                className="bg-[#0070f3] hover:bg-[#0060d3] transition-colors"
               >
-                {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
-              </button>
+                {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
+              </Button>
             </div>
-            <Button
-              type="submit"
-              disabled={loading || !input.trim()}
-              className="bg-[#0070f3] hover:bg-[#0060d3] transition-colors"
-            >
-              {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
-            </Button>
+            {listening && (
+              <p className="text-xs text-gray-500 mt-1">
+                {language === "english"
+                  ? "If voice recognition isn't working, you can type your message while the microphone is active."
+                  : "यदि आवाज पहचान काम नहीं कर रही है, तो आप माइक्रोफोन सक्रिय होने पर अपना संदेश टाइप कर सकते हैं।"}
+              </p>
+            )}
           </form>
         </CardFooter>
       </Card>
