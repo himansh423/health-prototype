@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: Promise<{ email: string }> }
+  { params }: { params: Promise<{ email: string }> }   // Using Promise to ensure params is resolved before use
 ) {
   try {
     await connectToDatabase();
